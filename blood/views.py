@@ -71,23 +71,26 @@ def afterlogin_view(request):
 
 @login_required(login_url='adminlogin')
 def admin_dashboard_view(request):
-    totalunit=models.Stock.objects.aggregate(Sum('unit'))
-    dict={
+    totalunit = models.Stock.objects.aggregate(Sum('unit'))
+    chart1, chart2 = generate_blood_charts()  # Generate the charts
 
-        'A1':models.Stock.objects.get(bloodgroup="A+"),
-        'A2':models.Stock.objects.get(bloodgroup="A-"),
-        'B1':models.Stock.objects.get(bloodgroup="B+"),
-        'B2':models.Stock.objects.get(bloodgroup="B-"),
-        'AB1':models.Stock.objects.get(bloodgroup="AB+"),
-        'AB2':models.Stock.objects.get(bloodgroup="AB-"),
-        'O1':models.Stock.objects.get(bloodgroup="O+"),
-        'O2':models.Stock.objects.get(bloodgroup="O-"),
-        'totaldonors':dmodels.Donor.objects.all().count(),
-        'totalbloodunit':totalunit['unit__sum'],
-        'totalrequest':models.BloodRequest.objects.all().count(),
-        'totalapprovedrequest':models.BloodRequest.objects.all().filter(status='Approved').count()
+    dict = {
+        'A1': models.Stock.objects.get(bloodgroup="A+"),
+        'A2': models.Stock.objects.get(bloodgroup="A-"),
+        'B1': models.Stock.objects.get(bloodgroup="B+"),
+        'B2': models.Stock.objects.get(bloodgroup="B-"),
+        'AB1': models.Stock.objects.get(bloodgroup="AB+"),
+        'AB2': models.Stock.objects.get(bloodgroup="AB-"),
+        'O1': models.Stock.objects.get(bloodgroup="O+"),
+        'O2': models.Stock.objects.get(bloodgroup="O-"),
+        'totaldonors': dmodels.Donor.objects.all().count(),
+        'totalbloodunit': totalunit['unit__sum'],
+        'totalrequest': models.BloodRequest.objects.all().count(),
+        'totalapprovedrequest': models.BloodRequest.objects.all().filter(status='Approved').count(),
+        'chart1': chart1,  # Add chart1 to the context
+        'chart2': chart2,  # Add chart2 to the context
     }
-    return render(request,'blood/admin_dashboard.html',context=dict)
+    return render(request, 'blood/admin_dashboard.html', context=dict)
 
 @login_required(login_url='adminlogin')
 def admin_blood_view(request):
@@ -246,3 +249,89 @@ def reject_donation_view(request,pk):
     donation.status='Rejected'
     donation.save()
     return HttpResponseRedirect('/admin-donation')
+
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')  # This prevents GUI-related errors in Django
+
+import numpy as np
+import io
+import base64
+from django.shortcuts import render
+from .models import Stock, BloodRequest  # Import from blood.models
+from donor.models import BloodDonate  # Import from donor.models
+
+from datetime import datetime, timedelta
+
+def generate_blood_charts():
+    # Get the current year and month
+    now = datetime.now()
+    current_year = now.year
+
+    # Initialize data structures
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    donations = [0] * 12
+    requests = [0] * 12
+
+    # Query donations and requests for the current year
+    for i in range(1, 13):
+        start_date = datetime(current_year, i, 1)
+        if i == 12:
+            end_date = datetime(current_year + 1, 1, 1)
+        else:
+            end_date = datetime(current_year, i + 1, 1)
+
+        # Count donations and requests for each month
+        donations[i - 1] = BloodDonate.objects.filter(date__gte=start_date, date__lt=end_date).count()
+        requests[i - 1] = BloodRequest.objects.filter(date__gte=start_date, date__lt=end_date).count()
+
+    # Create the figure for donations vs requests
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(months, donations, marker='o', linestyle='-', color='blue', label='Monthly Donations')
+    ax.plot(months, requests, marker='o', linestyle='-', color='red', label='Monthly Requests')
+    ax.set_title("Monthly Donations vs Requests")
+    ax.set_xlabel("Months")
+    ax.set_ylabel("Units of Blood")
+    ax.legend()
+    ax.grid()
+
+    # Convert to base64 image
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    chart1 = base64.b64encode(buffer.getvalue()).decode()
+    buffer.close()
+
+    # Blood Stock Levels Over Months
+    blood_groups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"]
+    stock_levels = []
+
+    # Query stock levels for each blood group
+    for bg in blood_groups:
+        stock = Stock.objects.filter(bloodgroup=bg).first()
+        if stock:
+            stock_levels.append(stock.unit)
+        else:
+            stock_levels.append(0)
+
+    # Create the figure for blood stock levels
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.bar(blood_groups, stock_levels, color='green')
+    ax.set_title("Blood Stock Levels")
+    ax.set_xlabel("Blood Groups")
+    ax.set_ylabel("Stock Levels (Units)")
+    ax.grid()
+
+    # Convert to base64 image
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    chart2 = base64.b64encode(buffer.getvalue()).decode()
+    buffer.close()
+
+    return chart1, chart2
+
+def blood_analytics(request):
+    chart1, chart2 = generate_blood_charts()
+    return render(request, 'admin_dashboard.html', {'chart1': chart1, 'chart2': chart2})
+

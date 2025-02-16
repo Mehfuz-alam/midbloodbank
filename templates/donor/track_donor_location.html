@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Donor Location</title>
+    <script src="https://maps.gomaps.pro/maps/api/js?key=AlzaSyaD9QbroPXA0kAC3I7j7iZv8jpe9z6NPmp&callback=initMap" async defer></script>
+</head>
+<body>
+    <h1>Live Location of Donor</h1>
+
+    <!-- Display Google Map -->
+    <div id="map" style="height: 400px; width: 100%;"></div>
+
+    <script>
+        let map;
+        let marker;
+
+        function initMap() {
+            const donorLocation = { lat: {{ latitude }}, lng: {{ longitude }} };
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: donorLocation,
+            });
+
+            marker = new google.maps.Marker({
+                position: donorLocation,
+                map: map,
+                title: "Donor Location",
+                draggable: false,  // Marker is not draggable
+            });
+            
+            // Optionally, update the location periodically if using AJAX
+            updateDonorLocation();
+        }
+
+        function updateDonorLocation() {
+            setInterval(function() {
+                // Fetch updated location from server (using AJAX for live tracking)
+                fetch('/donor/get-location/')
+                    .then(response => response.json())
+                    .then(data => {
+                        const newLocation = {
+                            lat: data.latitude,
+                            lng: data.longitude,
+                        };
+                        marker.setPosition(newLocation);
+                        map.setCenter(newLocation);  // Adjust map to new location
+                    })
+                    .catch(error => console.error('Error updating location:', error));
+            }, 5000);  // Update every 5 seconds
+        }
+    </script>
+</body>
+</html>

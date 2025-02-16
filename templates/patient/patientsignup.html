@@ -132,7 +132,9 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div id="map" style="height: 400px; width: 100%;"></div>
+                       <input type="hidden" name="latitude" id="latitude">
+                       <input type="hidden" name="longitude" id="longitude">
                         <!-- Mobile -->
                         <div class="form-row">
                             <div class="name">Mobile</div>
@@ -167,7 +169,27 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function initMap() {
+            const defaultLocation = { lat: 22.5726, lng: 88.3639 }; // Example: Kolkata
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 8,
+                center: defaultLocation,
+            });
+    
+            const marker = new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                draggable: true,
+            });
+    
+            marker.addListener('dragend', function(event) {
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longitude').value = event.latLng.lng();
+            });
+        }
+    </script>
+    <script src="https://maps.gomaps.pro/maps/api/js?key=AlzaSyaD9QbroPXA0kAC3I7j7iZv8jpe9z6NPmp&callback=initMap" async defer></script>
     {% include "blood/footer.html" %}
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>

@@ -35,6 +35,8 @@ def donor_signup_view(request):
     if request.method == 'POST':
         userForm = forms.DonorUserForm(request.POST)
         donorForm = forms.DonorForm(request.POST, request.FILES)
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
         if userForm.is_valid() and donorForm.is_valid():
             user = userForm.save(commit=False)
             user.set_password(user.password)
@@ -43,6 +45,8 @@ def donor_signup_view(request):
 
             donor = donorForm.save(commit=False)
             donor.user = user
+            donor.latitude = latitude
+            donor.longitude = longitude
             donor.save()
 
             my_donor_group = Group.objects.get_or_create(name='DONOR')
@@ -189,3 +193,58 @@ def request_history_view(request):
     donor = models.Donor.objects.get(user_id=request.user.id)
     blood_request = bmodels.BloodRequest.objects.filter(request_by_donor=donor)
     return render(request, 'donor/request_history.html', {'blood_request': blood_request})
+
+
+from django.shortcuts import render
+from .models import Donor
+from .utils import haversine
+
+def nearby_donors(request):
+    user_lat = float(request.GET.get('latitude'))
+    user_lon = float(request.GET.get('longitude'))
+
+    nearby = []
+    for donor in Donor.objects.exclude(latitude__isnull=True, longitude__isnull=True):
+        distance = haversine(user_lat, user_lon, donor.latitude, donor.longitude)
+        if distance < 10:  # Example: within 10 km
+            nearby.append(donor)
+
+    return render(request, 'donor/nearby_donors.html', {'donors': nearby})
+
+from django.shortcuts import render
+from .models import Donor
+
+# Donor live location tracking view
+@login_required
+def track_donor_location(request):
+    try:
+        # Get the donor based on logged-in user
+        donor = Donor.objects.get(user=request.user)
+        lat = donor.latitude
+        lon = donor.longitude
+    except Donor.DoesNotExist:
+        lat, lon = 22.5726, 88.3639  # Default to Kolkata if no donor found
+
+    context = {
+        'latitude': lat,
+        'longitude': lon,
+    }
+
+    return render(request, 'donor/track_donor_location.html', context)
+
+from django.http import JsonResponse
+
+# Endpoint to get current donor location
+@login_required
+def get_donor_location(request):
+    try:
+        donor = Donor.objects.get(user=request.user)
+        return JsonResponse({
+            'latitude': donor.latitude,
+            'longitude': donor.longitude
+        })
+    except Donor.DoesNotExist:
+        return JsonResponse({
+            'latitude': 22.5726,  # Default to Kolkata
+            'longitude': 88.3639
+        })

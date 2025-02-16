@@ -14,4 +14,7 @@ urlpatterns = [
     path('donor-password-reset', views.donor_password_reset_view, name='donor-password-reset'),
     path('confirm-donor-reset-otp', views.confirm_donor_reset_otp_view, name='confirm-donor-reset-otp'),
     path('set-donor-new-password', views.set_donor_new_password_view, name='set-donor-new-password'),
+    path('nearby-donors/', views.nearby_donors, name='nearby_donors'),
+    path('track-location/', views.track_donor_location, name='track-donor-location'),
+    path('get-location/', views.get_donor_location, name='get-donor-location'),
 ]

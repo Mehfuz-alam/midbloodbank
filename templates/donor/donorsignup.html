@@ -1,17 +1,11 @@
-{%load static%}
+{% load static %}
 {% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-      
-   
-  </head>
-  <body>
+<head>
+</head>
+<body>
     {% include "blood/navbar.html" %}
-
-
-
-
     <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
         <div class="wrapper wrapper--w790">
             <br><br><br>
@@ -58,8 +52,9 @@
                                 </div>
                             </div>
                         </div>
-                         <!-- Email -->
-                         <div class="form-row">
+
+                        <!-- Email -->
+                        <div class="form-row">
                             <div class="name">Email</div>
                             <div class="value">
                                 <div class="input-group">
@@ -67,9 +62,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
 
                         <div class="form-row">
                             <div class="name">Blood Group</div>
@@ -93,8 +85,6 @@
                             </div>
                         </div>
 
-
-
                         <div class="form-row">
                             <div class="name">Address</div>
                             <div class="value">
@@ -103,7 +93,11 @@
                                 </div>
                             </div>
                         </div>
-
+                        
+                        <div id="map" style="height: 400px; width: 100%;"></div>
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
+                        
                         <div class="form-row">
                             <div class="name">Mobile</div>
                             <div class="value">
@@ -121,27 +115,55 @@
                                 </div>
                             </div>
                         </div>
-  
-  
 
                         <div>
                             <button class="btn btn--radius-2 btn-danger" type="submit">Register</button>
                         </div>
                     </form>
                     <br>
-                    <p style="text-align: center;">Already have an account ? <a style="text-decoration: none;" href="/donor/donorlogin">Click here to login</a></p>
-
+                    <p style="text-align: center;">Already have an account? <a style="text-decoration: none;" href="/donor/donorlogin">Click here to login</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-{% include "blood/footer.html" %}
-<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        // Initialize the map
+        function initMap() {
+            // Get the user's current location using Geolocation API
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    
+                    // Update the latitude and longitude input fields
+                    document.getElementById('latitude').value = userLocation.lat;
+                    document.getElementById('longitude').value = userLocation.lng;
 
-  </body>
+                    // Initialize the map centered at the user's location
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                        zoom: 14,
+                        center: userLocation,
+                    });
+
+                    // Add a marker at the user's location
+                    new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        draggable: true,
+                    });
+                }, function(error) {
+                    alert("Geolocation failed. Please ensure location services are enabled.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+    <script src="https://maps.gomaps.pro/maps/api/js?key=AlzaSyaD9QbroPXA0kAC3I7j7iZv8jpe9z6NPmp&callback=initMap" async defer></script>
+
+    {% include "blood/footer.html" %}
+</body>
 </html>

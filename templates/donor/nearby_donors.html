@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nearby Donors</title>
+</head>
+<body>
+    <h1>Nearby Donors</h1>
+    {% if donors %}
+        <ul>
+            {% for donor in donors %}
+                <li>{{ donor.get_name }} - {{ donor.address }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No donors found within 10 km.</p>
+    {% endif %}
+</body>
+</html>

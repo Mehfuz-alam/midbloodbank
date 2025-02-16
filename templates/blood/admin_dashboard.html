@@ -1,4 +1,4 @@
-
+{% load static %}
 {% block content %}
 
 
@@ -221,7 +221,15 @@
     </div>
 </div>
 <br><br>
+<div style="width: 90%; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+    <h2 style="color: #333; margin-top: 20px;">Monthly Donations vs. Requests</h2>
+    <img src="data:image/png;base64,{{ chart1 }}" alt="Donations vs Requests Chart" style="max-width: 80%; height: auto; margin-top: 10px; border-radius: 8px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);">
 
+    <h2 style="color: #333; margin-top: 20px;">Blood Stock Levels Over Months</h2>
+    <img src="data:image/png;base64,{{ chart2 }}" alt="Blood Stock Levels Chart" style="max-width: 80%; height: auto; margin-top: 10px; border-radius: 8px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);">
+
+    {% comment %} <img src="{% static 'images/hero.jpg' %}" alt="Hero Image" style="max-width: 80%; height: auto; margin-top: 10px; border-radius: 8px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);"> {% endcomment %}
+</div>
 <footer style="background-color: black;">
     <div class="container text-center py-4 text-white">
       <p>Blood Bank Management System

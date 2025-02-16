@@ -4,15 +4,18 @@ from . import models
 from .models import Donor
 
 class DonorUserForm(forms.ModelForm):
-    
+    latitude = forms.FloatField(widget=forms.HiddenInput())
+    longitude = forms.FloatField(widget=forms.HiddenInput())
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'password', 'email']
+        fields = ['first_name', 'last_name', 'username', 'password', 'email', 'latitude', 'longitude']
 
 class DonorForm(forms.ModelForm):
+    latitude = forms.FloatField(widget=forms.HiddenInput())
+    longitude = forms.FloatField(widget=forms.HiddenInput())
     class Meta:
         model = Donor
-        fields = ['address', 'mobile', 'profile_pic']
+        fields = ['address', 'mobile', 'profile_pic','latitude', 'longitude']
 
 class OTPVerificationForm(forms.Form):
     otp = forms.CharField(label="Enter OTP", max_length=6)

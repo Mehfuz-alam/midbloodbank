@@ -14,7 +14,10 @@ class Patient(models.Model):
     doctorname=models.CharField(max_length=50)
 
     address = models.CharField(max_length=40)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
     mobile = models.CharField(max_length=20,null=False)
+    
    
     @property
     def get_name(self):

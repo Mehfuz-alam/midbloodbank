@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank Analytics</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <h2>Monthly Donations vs. Requests</h2>
+    <img src="data:image/png;base64,{{ chart1 }}" alt="Donations vs Requests Chart">
+
+    <h2>Blood Stock Levels Over Months</h2>
+    <img src="data:image/png;base64,{{ chart2 }}" alt="Blood Stock Levels Chart">
+
+    <img src="{% static 'images/hero.jpg' %}" alt="Hero Image">
+</body>
+</html>

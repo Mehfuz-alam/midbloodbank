@@ -2,9 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from datetime import timedelta
+from geopy.geocoders import Nominatim
+
 
 class Donor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
     address = models.CharField(max_length=40)
     mobile = models.CharField(max_length=15, null=True)
     profile_pic = models.ImageField(upload_to='profile_pic/DonorProfilePic/', null=True, blank=True)
@@ -16,6 +20,14 @@ class Donor(models.Model):
     @property
     def get_instance(self):
         return self
+    @property
+    def location_name(self):
+        """Convert latitude and longitude into a readable address."""
+        if self.latitude and self.longitude:
+            geolocator = Nominatim(user_agent="donor_location_geocoder")
+            location = geolocator.reverse((self.latitude, self.longitude), exactly_one=True)
+            return location.address if location else "Location not found"
+        return "No location available"
 
 class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="donor_otp")  # Added related_name
@@ -31,12 +43,14 @@ class OTP(models.Model):
 
 
 class BloodDonate(models.Model): 
-    donor=models.ForeignKey(Donor,on_delete=models.CASCADE)   
-    disease=models.CharField(max_length=100,default="Nothing")
-    age=models.PositiveIntegerField()
-    bloodgroup=models.CharField(max_length=10)
-    unit=models.PositiveIntegerField(default=0)
-    status=models.CharField(max_length=20,default="Pending")
-    date=models.DateField(auto_now=True)
-    def __str__(self):
-        return self.donor
+    donor = models.ForeignKey('Donor', on_delete=models.CASCADE)   
+    disease = models.CharField(max_length=100, default="Nothing")
+    age = models.PositiveIntegerField()
+    bloodgroup = models.CharField(max_length=10)
+    unit = models.PositiveIntegerField(default=0)
+    status = models.CharField(max_length=20, default="Pending")
+    date = models.DateField(auto_now_add=True)
+    
+    @property
+    def is_expired(self):
+        return now().date() > self.date + timedelta(days=35)
