@@ -154,3 +154,51 @@ def set_new_password_view(request):
 
         return redirect('patientlogin')
     return render(request, 'patient/set_new_password.html')
+
+
+
+
+
+
+from django.contrib import messages
+
+@login_required
+def patient_profile_view(request):
+    try:
+        patient = models.Patient.objects.get(user=request.user)
+        return render(request, 'patient/patient_profile.html', {'patient': patient})
+    except models.Patient.DoesNotExist:
+        messages.error(request, "Patient profile not found.")
+        return redirect('patient-dashboard')
+    
+
+# from django.shortcuts import render, redirect
+# from django.contrib.auth.decorators import login_required
+# from django.contrib import messages
+# from . import models, forms
+
+# @login_required
+# def edit_patient_profile_view(request):
+#     patient = models.Patient.objects.get(user=request.user)
+#     user = request.user
+
+#     if request.method == 'POST':
+#         user_form = forms.PatientUserForm(request.POST, instance=user)
+#         patient_form = forms.PatientForm(request.POST, request.FILES, instance=patient)
+
+#         if user_form.is_valid() and patient_form.is_valid():
+#             user_form.save()  # Directly save user form (no need for manual field updates)
+#             patient_form.save()
+
+#             messages.success(request, "Profile updated successfully!")
+#             return redirect('patient-profile')
+#         else:
+#             messages.error(request, "Please correct the errors below.")
+#     else:
+#         user_form = forms.PatientUserForm(instance=user)
+#         patient_form = forms.PatientForm(instance=patient)
+
+#     return render(request, 'patient/edit_patient_profile.html', {
+#         'user_form': user_form,
+#         'patient_form': patient_form,
+#     })

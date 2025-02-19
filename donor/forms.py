@@ -6,8 +6,10 @@ from django.core.exceptions import ValidationError
 
 class DonorUserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label="Password")
-    latitude = forms.FloatField(widget=forms.HiddenInput())
-    longitude = forms.FloatField(widget=forms.HiddenInput())
+    # latitude = forms.FloatField(widget=forms.HiddenInput())
+    # longitude = forms.FloatField(widget=forms.HiddenInput())
+    latitude = forms.FloatField(widget=forms.HiddenInput(),required=False)
+    longitude = forms.FloatField(widget=forms.HiddenInput(),required=False)
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'password', 'email', 'latitude', 'longitude']
@@ -25,8 +27,10 @@ class DonorUserForm(forms.ModelForm):
             raise ValidationError("This username is already taken. Please choose a different one.")
         return username
 class DonorForm(forms.ModelForm):
-    latitude = forms.FloatField(widget=forms.HiddenInput())
-    longitude = forms.FloatField(widget=forms.HiddenInput())
+    # latitude = forms.FloatField(widget=forms.HiddenInput())
+    # longitude = forms.FloatField(widget=forms.HiddenInput())
+    latitude = forms.FloatField(widget=forms.HiddenInput(),required=False)
+    longitude = forms.FloatField(widget=forms.HiddenInput(),required=False)
     class Meta:
         model = Donor
         fields = ['bloodgroup','address', 'mobile', 'profile_pic','latitude', 'longitude']

@@ -1,0 +1,23 @@
+{% comment %} {% extends 'patient/patient_base.html' %} {% endcomment %}
+{% block content %}
+<div class="container">
+    <h2>My Profile</h2>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Name:</strong> {{ patient.user.first_name }} {{ patient.user.last_name }}</p>
+            <p><strong>Username:</strong> {{ patient.user.username }}</p>
+            <p><strong>Email:</strong> {{ patient.user.email }}</p>
+            <p><strong>Age:</strong> {{ patient.age }}</p>
+            <p><strong>Blood Group:</strong> {{ patient.bloodgroup }}</p>
+            <p><strong>Disease:</strong> {{ patient.disease }}</p>
+            <p><strong>Doctor Name:</strong> {{ patient.doctorname }}</p>
+            <p><strong>Address:</strong> {{ patient.address }}</p>
+            <p><strong>Mobile:</strong> {{ patient.mobile }}</p>
+            <p><strong>Profile Picture:</strong></p>
+            <img src="{{ patient.profile_pic.url }}" alt="Profile Picture" class="img-fluid" style="max-width: 200px;">
+            <br><br>
+            {% comment %} <a href="{% url 'edit-patient-profile' %}" class="btn btn-primary">Edit Profile</a> {% endcomment %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -12,4 +12,6 @@ urlpatterns = [
     path('password-reset', views.password_reset_view, name='password-reset'),
     path('confirm-reset-otp', views.confirm_reset_otp_view, name='confirm-reset-otp'),
     path('set-new-password', views.set_new_password_view, name='set-new-password'),
+    path('patient-profile/', views.patient_profile_view, name='patient-profile'),
+    # path('edit-patient-profile/', views.edit_patient_profile_view, name='edit-patient-profile'),
 ]
