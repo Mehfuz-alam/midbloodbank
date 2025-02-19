@@ -199,18 +199,50 @@ from django.shortcuts import render
 from .models import Donor
 from .utils import haversine
 
+from django.shortcuts import render
+from .models import Donor
+import json
+
 def nearby_donors(request):
-    user_lat = float(request.GET.get('latitude'))
-    user_lon = float(request.GET.get('longitude'))
+    user_lat = request.GET.get('latitude')
+    user_lon = request.GET.get('longitude')
+
+    # Check if latitude and longitude are provided
+    if not user_lat or not user_lon:
+        return render(request, 'donor/nearby_donors.html', {
+            'error': 'Please provide your location (latitude and longitude).'
+        })
+
+    try:
+        user_lat = float(user_lat)
+        user_lon = float(user_lon)
+    except (TypeError, ValueError):
+        return render(request, 'donor/nearby_donors.html', {
+            'error': 'Invalid latitude or longitude values.'
+        })
 
     nearby = []
     for donor in Donor.objects.exclude(latitude__isnull=True, longitude__isnull=True):
         distance = haversine(user_lat, user_lon, donor.latitude, donor.longitude)
         if distance < 10:  # Example: within 10 km
-            nearby.append(donor)
+            nearby.append({
+                'get_name': donor.get_name,
+                'address': donor.address,
+                'latitude': donor.latitude,
+                'longitude': donor.longitude,
+                'mobile': donor.mobile,
+                'bloodgroup':donor.bloodgroup,
+            })
 
-    return render(request, 'donor/nearby_donors.html', {'donors': nearby})
+    # Convert the list of donors to JSON for use in the template
+    donors_json = json.dumps(nearby)
 
+    return render(request, 'donor/nearby_donors.html', {
+        'donors': nearby,
+        'donors_json': donors_json,
+        'user_lat': user_lat,
+        'user_lon': user_lon,
+    })
 from django.shortcuts import render
 from .models import Donor
 

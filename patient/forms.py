@@ -1,11 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
 from . import models
-
+from django.core.exceptions import ValidationError
 
 class PatientUserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label="Password")
-
+    latitude = forms.FloatField(widget=forms.HiddenInput())
+    longitude = forms.FloatField(widget=forms.HiddenInput())
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password']
@@ -16,14 +17,26 @@ class PatientUserForm(forms.ModelForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
-
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if len(username) < 5:
+            raise ValidationError("Username must be at least 5 characters long.")
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("This username is already taken. Please choose a different one.")
+        return username
 
 
 class PatientForm(forms.ModelForm):
+    latitude = forms.FloatField(widget=forms.HiddenInput())
+    longitude = forms.FloatField(widget=forms.HiddenInput())
     class Meta:
         model = models.Patient
-        fields = ['age', 'bloodgroup', 'disease', 'address', 'doctorname', 'mobile', 'profile_pic']
-
+        fields = ['age', 'bloodgroup', 'disease','doctorname', 'address', 'mobile', 'profile_pic']
+    def clean_mobile(self):
+        mobile = self.cleaned_data.get('mobile')
+        if len(mobile) != 10 or not mobile.isdigit():
+            raise ValidationError("Phone number must be exactly 10 digits long.")
+        return mobile
 
 class PasswordResetForm(forms.Form):
     email = forms.EmailField(label="Email", max_length=254)

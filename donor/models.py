@@ -11,6 +11,7 @@ class Donor(models.Model):
     longitude = models.FloatField(null=True, blank=True)
     address = models.CharField(max_length=40)
     mobile = models.CharField(max_length=15, null=True)
+    bloodgroup = models.CharField(max_length=10,default='unknown')
     profile_pic = models.ImageField(upload_to='profile_pic/DonorProfilePic/', null=True, blank=True)
 
     @property
@@ -20,6 +21,10 @@ class Donor(models.Model):
     @property
     def get_instance(self):
         return self
+    
+    def __str__(self):
+        return self.get_name
+    
     @property
     def location_name(self):
         """Convert latitude and longitude into a readable address."""
@@ -43,7 +48,8 @@ class OTP(models.Model):
 
 
 class BloodDonate(models.Model): 
-    donor = models.ForeignKey('Donor', on_delete=models.CASCADE)   
+    donor = models.ForeignKey('Donor', on_delete=models.CASCADE) 
+    
     disease = models.CharField(max_length=100, default="Nothing")
     age = models.PositiveIntegerField()
     bloodgroup = models.CharField(max_length=10)

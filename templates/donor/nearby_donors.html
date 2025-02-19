@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html>
 <head>
     <title>Nearby Donors</title>
@@ -14,5 +14,96 @@
     {% else %}
         <p>No donors found within 10 km.</p>
     {% endif %}
+    <script>
+        // Get the user's location using the Geolocation API
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+    
+                    // Redirect to the nearby_donors view with latitude and longitude
+                    window.location.href = `/donor/nearby-donors/?latitude=${latitude}&longitude=${longitude}`;
+                },
+                function(error) {
+                    // Handle errors (e.g., user denied location access)
+                    document.getElementById('location-error').innerText = 'Error: Unable to retrieve your location.';
+                }
+            );
+        } else {
+            document.getElementById('location-error').innerText = 'Error: Geolocation is not supported by your browser.';
+        }
+    </script>
+   
+</body>
+</html> {% endcomment %}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nearby Donors</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map { height: 500px; } /* Set the height of the map */
+    </style>
+</head>
+<body>
+    <h1>Nearby Donors</h1>
+    <div id="map"></div> <!-- Map container -->
+
+    <script>
+        // Get the user's location using the Geolocation API
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Redirect to the nearby_donors view with latitude and longitude
+                    window.location.href = `/donor/nearby-donors/?latitude=${latitude}&longitude=${longitude}`;
+                },
+                function(error) {
+                    // Handle errors (e.g., user denied location access)
+                    alert('Error: Unable to retrieve your location.');
+                }
+            );
+        } else {
+            alert('Error: Geolocation is not supported by your browser.');
+        }
+
+        // Initialize the map
+        function initMap() {
+            const userLat = parseFloat("{{ user_lat }}");
+            const userLon = parseFloat("{{ user_lon }}");
+
+            // Create a map centered at the user's location
+            const map = L.map('map').setView([userLat, userLon], 13);
+
+            // Add a tile layer (you can use OpenStreetMap or other providers)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add a marker for the user's location
+            L.marker([userLat, userLon]).addTo(map)
+                .bindPopup('Your Location')
+                .openPopup();
+
+            // Add markers for nearby donors
+            const donors = JSON.parse('{{ donors_json|escapejs }}');
+            donors.forEach(donor => {
+                L.marker([donor.latitude, donor.longitude]).addTo(map)
+                    .bindPopup(`<b>${donor.get_name}</b><br>${donor.mobile}<br>${donor.bloodgroup}`);
+            });
+        }
+
+        // Call the initMap function when the page loads
+        window.onload = initMap;
+    </script>
 </body>
 </html>

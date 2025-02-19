@@ -24,6 +24,8 @@ def patient_signup_view(request):
     if request.method == 'POST':
         userForm = forms.PatientUserForm(request.POST)
         patientForm = forms.PatientForm(request.POST, request.FILES)
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
         if userForm.is_valid() and patientForm.is_valid():
             user = userForm.save(commit=False)
             user.set_password(user.password)
@@ -33,6 +35,8 @@ def patient_signup_view(request):
             patient = patientForm.save(commit=False)
             patient.user = user
             patient.bloodgroup = patientForm.cleaned_data['bloodgroup']
+            patient.latitude = latitude
+            patient.longitude = longitude
             patient.save()
 
             my_patient_group = Group.objects.get_or_create(name='PATIENT')

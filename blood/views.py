@@ -92,28 +92,95 @@ def admin_dashboard_view(request):
     }
     return render(request, 'blood/admin_dashboard.html', context=dict)
 
+# @login_required(login_url='adminlogin')
+# def admin_blood_view(request):
+#     dict={
+#         'bloodForm':forms.BloodForm(),
+#         'A1':models.Stock.objects.get(bloodgroup="A+"),
+#         'A2':models.Stock.objects.get(bloodgroup="A-"),
+#         'B1':models.Stock.objects.get(bloodgroup="B+"),
+#         'B2':models.Stock.objects.get(bloodgroup="B-"),
+#         'AB1':models.Stock.objects.get(bloodgroup="AB+"),
+#         'AB2':models.Stock.objects.get(bloodgroup="AB-"),
+#         'O1':models.Stock.objects.get(bloodgroup="O+"),
+#         'O2':models.Stock.objects.get(bloodgroup="O-"),
+#     }
+#     if request.method=='POST':
+#         bloodForm=forms.BloodForm(request.POST)
+#         if bloodForm.is_valid() :        
+#             bloodgroup=bloodForm.cleaned_data['bloodgroup']
+#             stock=models.Stock.objects.get(bloodgroup=bloodgroup)
+#             stock.unit=bloodForm.cleaned_data['unit']
+#             stock.save()
+#         return HttpResponseRedirect('admin-blood')
+#     return render(request,'blood/admin_blood.html',context=dict)
+
+# views.py
+from django.shortcuts import render, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from . import forms, models
+
+@login_required(login_url='adminlogin')
 @login_required(login_url='adminlogin')
 def admin_blood_view(request):
-    dict={
-        'bloodForm':forms.BloodForm(),
-        'A1':models.Stock.objects.get(bloodgroup="A+"),
-        'A2':models.Stock.objects.get(bloodgroup="A-"),
-        'B1':models.Stock.objects.get(bloodgroup="B+"),
-        'B2':models.Stock.objects.get(bloodgroup="B-"),
-        'AB1':models.Stock.objects.get(bloodgroup="AB+"),
-        'AB2':models.Stock.objects.get(bloodgroup="AB-"),
-        'O1':models.Stock.objects.get(bloodgroup="O+"),
-        'O2':models.Stock.objects.get(bloodgroup="O-"),
+    # Fetching blood stock data
+    blood_stock = {
+        'A1': models.Stock.objects.get(bloodgroup="A+"),
+        'A2': models.Stock.objects.get(bloodgroup="A-"),
+        'B1': models.Stock.objects.get(bloodgroup="B+"),
+        'B2': models.Stock.objects.get(bloodgroup="B-"),
+        'AB1': models.Stock.objects.get(bloodgroup="AB+"),
+        'AB2': models.Stock.objects.get(bloodgroup="AB-"),
+        'O1': models.Stock.objects.get(bloodgroup="O+"),
+        'O2': models.Stock.objects.get(bloodgroup="O-"),
     }
-    if request.method=='POST':
-        bloodForm=forms.BloodForm(request.POST)
-        if bloodForm.is_valid() :        
-            bloodgroup=bloodForm.cleaned_data['bloodgroup']
-            stock=models.Stock.objects.get(bloodgroup=bloodgroup)
-            stock.unit=bloodForm.cleaned_data['unit']
+    total_blood_stock = sum(stock.unit for stock in blood_stock.values())
+    # Fetching blood request data by type and month
+    blood_requests = models.BloodRequest.objects.all()
+    request_data = {}
+
+    for req in blood_requests:
+        month = req.date.month
+        blood_type = req.bloodgroup
+        if month not in request_data:
+            request_data[month] = {}
+        if blood_type not in request_data[month]:
+            request_data[month][blood_type] = 0
+        request_data[month][blood_type] += req.unit
+
+    # Prepare data for the chart
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    blood_types = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
+    chart_data = {bt: [request_data.get(m, {}).get(bt, 0) for m in range(1, 13)] for bt in blood_types}
+
+    # Pre-calculate colors for each blood type
+    colors = []
+    for i in range(len(blood_types)):
+        r = i * 30  # Calculate the red component
+        colors.append({
+            'background': f'rgba({r}, 99, 132, 0.2)',
+            'border': f'rgba({r}, 99, 132, 1)',
+        })
+
+    context = {
+        'bloodForm': forms.BloodForm(),
+        **blood_stock,
+        'total_blood_stock': total_blood_stock,
+        'chart_data': chart_data,
+        'months': months,
+        'blood_types': blood_types,
+        'colors': colors,  # Pass pre-calculated colors to the template
+    }
+
+    if request.method == 'POST':
+        bloodForm = forms.BloodForm(request.POST)
+        if bloodForm.is_valid():
+            bloodgroup = bloodForm.cleaned_data['bloodgroup']
+            stock = models.Stock.objects.get(bloodgroup=bloodgroup)
+            stock.unit = bloodForm.cleaned_data['unit']
             stock.save()
-        return HttpResponseRedirect('admin-blood')
-    return render(request,'blood/admin_blood.html',context=dict)
+            return HttpResponseRedirect('admin-blood')
+    return render(request, 'blood/admin_blood.html', context=context)
 
 
 @login_required(login_url='adminlogin')
@@ -177,6 +244,30 @@ def update_patient_view(request,pk):
             patient.save()
             return redirect('admin-patient')
     return render(request,'blood/update_patient.html',context=mydict)
+
+# @login_required(login_url='adminlogin')
+# def update_patient_view(request, pk):
+#     patient = pmodels.Patient.objects.get(id=pk)
+#     user = patient.user
+#     userForm = pforms.PatientUserForm(instance=user)
+#     patientForm = pforms.PatientForm(request.FILES, instance=patient)
+#     mydict = {'userForm': userForm, 'patientForm': patientForm}
+
+#     if request.method == 'POST':
+#         userForm = pforms.PatientUserForm(request.POST, instance=user)
+#         patientForm = pforms.PatientForm(request.POST, request.FILES, instance=patient)
+#         if userForm.is_valid() and patientForm.is_valid():
+#             user = userForm.save()  # Password is handled in the form's save method
+#             patient = patientForm.save(commit=False)
+#             patient.user = user
+#             patient.bloodgroup = patientForm.cleaned_data['bloodgroup']
+#             patient.save()
+#             return redirect('admin-patient')
+#         else:
+#             # Print form errors to debug
+#             print("User Form Errors:", userForm.errors)
+#             print("Patient Form Errors:", patientForm.errors)
+#     return render(request, 'blood/update_patient.html', context=mydict)
 
 
 @login_required(login_url='adminlogin')
@@ -335,3 +426,17 @@ def blood_analytics(request):
     chart1, chart2 = generate_blood_charts()
     return render(request, 'admin_dashboard.html', {'chart1': chart1, 'chart2': chart2})
 
+
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.views import View
+
+class CustomLogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('home')  # Redirect to the home page after logout
+
+    def post(self, request):
+        logout(request)
+        return redirect('home')  # Redirect to the home page after logout

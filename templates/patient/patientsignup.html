@@ -114,14 +114,14 @@
                         </div>
 
                         <!-- Doctor Name -->
-                        <div class="form-row">
+                  <div class="form-row">
                             <div class="name">Doctor Name</div>
                             <div class="value">
                                 <div class="input-group">
                                     {% render_field patientForm.doctorname|attr:'required:true' class="input--style-5" %}
                                 </div>
                             </div>
-                        </div>
+                        </div>  
 
                         <!-- Address -->
                         <div class="form-row">
@@ -170,23 +170,38 @@
         </div>
     </div>
     <script>
+        // Initialize the map
         function initMap() {
-            const defaultLocation = { lat: 22.5726, lng: 88.3639 }; // Example: Kolkata
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 8,
-                center: defaultLocation,
-            });
-    
-            const marker = new google.maps.Marker({
-                position: defaultLocation,
-                map: map,
-                draggable: true,
-            });
-    
-            marker.addListener('dragend', function(event) {
-                document.getElementById('latitude').value = event.latLng.lat();
-                document.getElementById('longitude').value = event.latLng.lng();
-            });
+            // Get the user's current location using Geolocation API
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    
+                    // Update the latitude and longitude input fields
+                    document.getElementById('latitude').value = userLocation.lat;
+                    document.getElementById('longitude').value = userLocation.lng;
+
+                    // Initialize the map centered at the user's location
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                        zoom: 14,
+                        center: userLocation,
+                    });
+
+                    // Add a marker at the user's location
+                    new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        draggable: true,
+                    });
+                }, function(error) {
+                    alert("Geolocation failed. Please ensure location services are enabled.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
         }
     </script>
     <script src="https://maps.gomaps.pro/maps/api/js?key=AlzaSyaD9QbroPXA0kAC3I7j7iZv8jpe9z6NPmp&callback=initMap" async defer></script>

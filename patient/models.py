@@ -2,10 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from datetime import timedelta
-
+from geopy.geocoders import Nominatim
 
 class Patient(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
+    
     profile_pic= models.ImageField(upload_to='profile_pic/Patient/',null=True,blank=True)
 
     age=models.PositiveIntegerField()
@@ -27,7 +28,14 @@ class Patient(models.Model):
         return self
     def __str__(self):
         return self.user.first_name
-    
+    @property
+    def location_name(self):
+        """Convert latitude and longitude into a readable address."""
+        if self.latitude and self.longitude:
+            geolocator = Nominatim(user_agent="donor_location_geocoder")
+            location = geolocator.reverse((self.latitude, self.longitude), exactly_one=True)
+            return location.address if location else "Location not found"
+        return "No location available"
 
 class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="patient_otp")  # Added related_name
