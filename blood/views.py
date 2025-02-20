@@ -92,28 +92,6 @@ def admin_dashboard_view(request):
     }
     return render(request, 'blood/admin_dashboard.html', context=dict)
 
-# @login_required(login_url='adminlogin')
-# def admin_blood_view(request):
-#     dict={
-#         'bloodForm':forms.BloodForm(),
-#         'A1':models.Stock.objects.get(bloodgroup="A+"),
-#         'A2':models.Stock.objects.get(bloodgroup="A-"),
-#         'B1':models.Stock.objects.get(bloodgroup="B+"),
-#         'B2':models.Stock.objects.get(bloodgroup="B-"),
-#         'AB1':models.Stock.objects.get(bloodgroup="AB+"),
-#         'AB2':models.Stock.objects.get(bloodgroup="AB-"),
-#         'O1':models.Stock.objects.get(bloodgroup="O+"),
-#         'O2':models.Stock.objects.get(bloodgroup="O-"),
-#     }
-#     if request.method=='POST':
-#         bloodForm=forms.BloodForm(request.POST)
-#         if bloodForm.is_valid() :        
-#             bloodgroup=bloodForm.cleaned_data['bloodgroup']
-#             stock=models.Stock.objects.get(bloodgroup=bloodgroup)
-#             stock.unit=bloodForm.cleaned_data['unit']
-#             stock.save()
-#         return HttpResponseRedirect('admin-blood')
-#     return render(request,'blood/admin_blood.html',context=dict)
 
 # views.py
 from django.shortcuts import render, HttpResponseRedirect
@@ -255,51 +233,6 @@ def update_patient_view(request, pk):
             print("Patient Form Errors:", patientForm.errors)
     return render(request, 'blood/update_patient.html', context=mydict)
 
-# @login_required(login_url='adminlogin')
-# def update_patient_view(request,pk):
-#     patient=pmodels.Patient.objects.get(id=pk)
-#     user=pmodels.User.objects.get(id=patient.user_id)
-#     userForm=pforms.PatientUserForm(instance=user)
-#     patientForm=pforms.PatientForm(request.FILES,instance=patient)
-#     mydict={'userForm':userForm,'patientForm':patientForm}
-#     if request.method=='POST':
-#         userForm=pforms.PatientUserForm(request.POST,instance=user)
-#         patientForm=pforms.PatientForm(request.POST,request.FILES,instance=patient)
-#         if userForm.is_valid() and patientForm.is_valid():
-#             user=userForm.save()
-#             user.set_password(user.password)
-#             user.save()
-#             patient=patientForm.save(commit=False)
-#             patient.user=user
-#             patient.bloodgroup=patientForm.cleaned_data['bloodgroup']
-#             patient.save()
-#             return redirect('admin-patient')
-#     return render(request,'blood/update_patient.html',context=mydict)
-
-# @login_required(login_url='adminlogin')
-# def update_patient_view(request, pk):
-#     patient = pmodels.Patient.objects.get(id=pk)
-#     user = patient.user
-#     userForm = pforms.PatientUserForm(instance=user)
-#     patientForm = pforms.PatientForm(request.FILES, instance=patient)
-#     mydict = {'userForm': userForm, 'patientForm': patientForm}
-
-#     if request.method == 'POST':
-#         userForm = pforms.PatientUserForm(request.POST, instance=user)
-#         patientForm = pforms.PatientForm(request.POST, request.FILES, instance=patient)
-#         if userForm.is_valid() and patientForm.is_valid():
-#             user = userForm.save()  # Password is handled in the form's save method
-#             patient = patientForm.save(commit=False)
-#             patient.user = user
-#             patient.bloodgroup = patientForm.cleaned_data['bloodgroup']
-#             patient.save()
-#             return redirect('admin-patient')
-#         else:
-#             # Print form errors to debug
-#             print("User Form Errors:", userForm.errors)
-#             print("Patient Form Errors:", patientForm.errors)
-#     return render(request, 'blood/update_patient.html', context=mydict)
-
 
 @login_required(login_url='adminlogin')
 def delete_patient_view(request,pk):
@@ -384,6 +317,13 @@ from .models import Stock, BloodRequest  # Import from blood.models
 from donor.models import BloodDonate  # Import from donor.models
 
 from datetime import datetime, timedelta
+from django.shortcuts import render
+from .models import Stock, BloodRequest
+from donor.models import BloodDonate
+import matplotlib.pyplot as plt
+import io
+import base64
+from datetime import datetime
 
 def generate_blood_charts():
     # Get the current year and month

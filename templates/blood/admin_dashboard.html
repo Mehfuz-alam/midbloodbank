@@ -1,236 +1,436 @@
-{% load static %}
+
 {% block content %}
-
-
+{% load widget_tweaks %}
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Document</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .hero {
-          background-image: url('hero.jpg'); //yesma random image hala hai afai
-          margin: 0;
-          height: 80vh; 
-          background-size: cover; 
-          background-repeat: no-repeat; 
-          background-position: center; 
-      }
-      
-      
-      #hero-content{
-          background-color: rgba(55, 53, 53, 0.4);
-          color: white;
-          padding: 20px;
-          border-radius: 6px;
-      }
-      </style>
+        /* Navbar Custom Styling */
+        .custom-navbar {
+            border-radius: 20px;
+            box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3); 
+        }
+
+        .profile-pic {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .logout-text {
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Custom styling for vertical navbar */
+        .vertical-navbar {
+            height: 100vh;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+
+            
+        }
+
+        .vertical-navbar a {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            padding: 12px 20px;
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .vertical-navbar a:hover {
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+
+        /* Form Styling */
+        .form-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            margin: auto;
+            height: 100vh; /* Set a fixed height */
+        }
+
+        .form-container h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align:center;
+        }
+
+        /* Input Styles */
+        .form-control {
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        /* Urgency Radio Button */
+        .urgency-level label {
+            margin-right: 20px;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        .submit-btn:hover {
+            background: black;
+            color: white;
+        }
+
+
+
+        .form-row {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .name {
+            font-weight: bold;
+            color: #333;
+            width: 100%;
+            text-align: center;
+        }
+        .input-group input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            border: 1px solid black;
+        }
+        
+        button:hover {
+            background: black;
+            color: white;
+        }
+        
+        p {
+            text-align: center;
+        }
+        
+        a {
+            color: black;
+        }
+        
+        a:hover {
+            color: red;
+        }
+        /* General Styling for Cards */
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Card Body */
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* Icon Styling */
+        .blood i {
+            font-size: 40px;
+            color: #dc3545; /* Red theme for blood donation */
+            margin-bottom: 10px;
+        }
+        
+        /* Background Colors */
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+        
+        /* Typography */
+        .card-body div {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .card-body div:last-child {
+            font-size: 22px;
+            color: #555;
+        }
+        
+        /* Responsive Grid Layout */
+        @media (max-width: 768px) {
+            .row3 {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        
+            .col-sm-3 {
+                flex: 0 0 48%;
+                max-width: 48%;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .col-sm-3 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+.card-body1 { background: linear-gradient(135deg, #ff416c, #ff4b2b);border-radius: 10px; } /* Red/Pink */
+.card-body2 { background: linear-gradient(135deg, #007bff, #00c6ff);border-radius: 10px; } /* Blue */
+.card-body3 { background: linear-gradient(135deg, #28a745, #a1d88f); border-radius: 10px;} /* Green */
+.card-body4 { background: linear-gradient(135deg, #fd7e14, #ff9f43); border-radius: 10px;} /* Orange */
+    </style>
+    <title>Request Blood</title>
 </head>
-
-
-    <header class="p-3 text-bg-dark">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-              <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-            </a>
-    
-       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-              <li><a href="/admin-donor" class="nav-link px-2 text-white">Donor</a></li>
-              <li><a href="/admin-patient" class="nav-link px-2 text-white">Patient</a></li>
-              <li><a href="/admin-donation" class="nav-link px-2 text-white">Donations</a></li>
-              <li><a href="/admin-request" class="nav-link px-2 text-white">Blood Requests</a></li>
-              <li><a href="/admin-request-history" class="nav-link px-2 text-white">Request History</a></li>
-              <li><a href="/admin-blood" class="nav-link px-2 text-white">Blood Stock</a></li>
-
-              
-              
-             </ul>
-  
-     
-   
-    
-            <div class="text-end">
-                <a href="/logout" style="background-color: #8B0000;" class="btn text-white">Logout</a>
-          
+<body style="background-color: rgb(238, 238, 238);">
+    <div class="container-fluid mt-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">BloodBridge</a>
+                <div class="d-flex ms-auto">
+                  <a href="/donor/nearby-donors" class="logout-text">Nearby Donors</a> &nbsp;&nbsp;
+                    <a href="/logout" class="logout-text">Logout</a>&nbsp;&nbsp;
+                    
+                    <a href="/donor/track-location"  class="logout-text">Track Donor</a>&nbsp;&nbsp;
+                    {% comment %} <div class="text-end">
+                     
+                    <!-- Profile Picture -->
+                    <img src="https://via.placeholder.com/40" alt="Profile Picture" class="profile-pic">
+                </div> {% endcomment %}
             </div>
-            &nbsp;&nbsp;
-            <div class="text-end">
-              <a href="/donor/nearby-donors" style="background-color: green;" class="btn text-white">Nearby Donors</a>
-        
-          </div>
-          &nbsp;&nbsp;
-            <div class="text-end">
-              <a href="/donor/track-location" style="background-color: green;" class="btn text-white">Track Donor</a>
-        
-          </div>
-          </div>
-        </div>
-      </header>
-      <br><br>
-<div class="container">
-
-    <div class="row">
-        <div class="col-sm-3">
-          <div class="card bg-light">
-            <div class="card-body">
-                <div class="blood">
-                    <h2>A+ <i class="fas fa-tint"></i></h2>
-                </div><br><br>
-                <div>
-                    {{A1.unit}}
-                </div>                            
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>B+ <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{B1.unit}}
-                    </div>                            
-                </div>
-              </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>O+ <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{O1.unit}}
-                    </div>                            
-                </div>
-              </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>AB+ <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{AB1.unit}}
-                    </div>                            
-                </div>
-              </div>
-          </div>
-      </div>
-  <br>
-      <div class="row">
-        <div class="col-sm-3">
-          <div class="card bg-light">
-            <div class="card-body">
-                <div class="blood">
-                    <h2>A- <i class="fas fa-tint"></i></h2>
-                </div><br><br>
-                <div>
-                  {{A2.unit}}
-                </div>                            
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>B- <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{B2.unit}}
-                    </div>                            
-                </div>
-              </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>O- <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{O2.unit}}
-                    </div>                            
-                </div>
-              </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                        <h2>AB- <i class="fas fa-tint"></i></h2>
-                    </div><br><br>
-                    <div>
-                      {{AB2.unit}}
-                    </div>                            
-                </div>
-              </div>
-          </div>
-      </div>
-<hr>
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="card bg-light">
-          <div class="card-body">
-              <div class="blood">
-                  <i class="fas fa-users"></i>
-              </div><br>
-              <div>
-                  Total Donors <br>
-                  {{totaldonors}}
-              </div>                            
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-3">
-          <div class="card bg-light">
-              <div class="card-body">
-                  <div class="blood">
-                      <i class="fas fa-spinner"></i>
-                  </div><br>
-                  <div>
-                      Total Requests <br>
-                     {{totalrequest}}
-                  </div>                            
-              </div>
-            </div>
-      </div>
-      <div class="col-sm-3">
-          <div class="card bg-light">
-              <div class="card-body">
-                  <div class="blood">
-                      <i class="far fa-check-circle"></i>
-                  </div><br>
-                  <div>
-                      Approved Requests <br>
-                      {{totalapprovedrequest}}
-                  </div>                            
-              </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="card bg-light">
-              <div class="card-body">
-                  <div class="blood">
-                      <i class="fas fa-tint xyz"></i>
-                  </div><br>
-                  <div>
-                      Total Blood Unit (in ml) <br>
-                      {{totalbloodunit}}
-                  </div>                            
-              </div>
-            </div>
-        </div>
+        </nav>
     </div>
-</div>
-<br><br>
+
+    <!-- Vertical Navbar -->
+    <div class="d-flex">
+        <div class="vertical-navbar">
+            <a href="/">Dashboard</a>
+            <a href="/admin-donor" >Donor</a>
+            <a href="/admin-patient" >Patient</a>
+            <a href="/admin-donation" >Donations</a>
+            <a href="/admin-request" >Blood Requests</a>
+            <a href="/admin-request-history" >Request History</a>
+            <a href="/admin-blood" >Blood Stock</a>
+        </div>
+        
+        <!-- Main Content Area -->
+        <br><br>
+        <div class="container">
+           <br><br>
+            <div class="row">
+                <div class="col-sm-3">
+                  <div class="card bg-light">
+                    <div class="card-body">
+                        <div class="blood">
+                          <img src="{% static 'image/bloodlogo.png' %}" height="100px" alt="">
+                            <h2>A+ <i class="fas fa-tint"></i></h2>
+                        </div><br><br>
+                        <div>
+                            {{A1.unit}} units
+                        </div>                            
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="blood">
+                              <img src="{% static 'image/bloodlogo.png' %}" height="100px" alt="">
+                                <h2>B+ <i class="fas fa-tint"></i></h2>
+                            </div><br><br>
+                            <div>
+                              {{B1.unit}} units
+                            </div>                            
+                        </div>
+                      </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="blood">
+                              <img src="{% static 'image/bloodlogo.png' %}" height="100px" alt="">
+                                <h2>O+ <i class="fas fa-tint"></i></h2>
+                            </div><br><br>
+                            <div>
+                              {{O1.unit}} units
+                            </div>                            
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="blood">
+                              <img src="{% static 'image/bloodlogo.png' %}" height="100px" alt="">
+                                <h2>AB+ <i class="fas fa-tint"></i></h2>
+                            </div><br><br>
+                            <div>
+                              {{AB1.unit}} units
+                            </div>                            
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-sm-3">
+                  <div class="card bg-light">
+                    <div class="card-body">
+                        <div class="blood">
+                          <img src="{% static 'image/bloodlogo.png' %}" height="100px" alt="">
+                            <h2>A- <i class="fas fa-tint"></i></h2>
+                        </div><br><br>
+                        <div>
+                          {{A2.unit}} units
+                        </div>                            
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="blood">
+                              <img src="{% static 'image/bloodlogo.png' %}" height="100px" alt="">
+                                <h2>B- <i class="fas fa-tint"></i></h2>
+                            </div><br><br>
+                            <div>
+                              {{B2.unit}} units
+                            </div>                            
+                        </div>
+                      </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="blood">
+                              <img src="{% static 'image/bloodlogo.png' %}" height="100px" alt="">
+                                <h2>O- <i class="fas fa-tint"></i></h2>
+                            </div><br><br>
+                            <div>
+                              {{O2.unit}} units
+                            </div>                            
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="blood">
+                                <img src="{% static 'image/bloodlogo.png' %}" height="100px" alt="">
+                                <h2>AB- <i class="fas fa-tint"></i></h2>
+                            </div><br><br>
+                            <div>
+                              {{AB2.unit}} units
+                            </div>                            
+                        </div>
+                      </div>
+                  </div>
+              </div>
+             <hr>
+             <div class="row">
+              <div class="col-sm-3">
+                <div class="card bg-light">
+                  <div class="card-body1">
+                      <div class="blood">
+                          <i class="fas fa-users"></i>
+                      </div><br>
+                      <div>
+                          Total Donors <br>
+                          {{totaldonors}} 
+                      </div>                            
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                  <div class="card bg-light">
+                      <div class="card-body2">
+                          <div class="blood">
+                              <i class="fas fa-spinner"></i>
+                          </div><br>
+                          <div>
+                              Total Requests <br>
+                             {{totalrequest}}
+                          </div>                            
+                      </div>
+                    </div>
+              </div>
+              <div class="col-sm-3">
+                  <div class="card bg-light">
+                      <div class="card-body3">
+                          <div class="blood">
+                              <i class="far fa-check-circle"></i>
+                          </div><br>
+                          <div>
+                              Approved Requests <br>
+                              {{totalapprovedrequest}}
+                          </div>                            
+                      </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="card bg-light">
+                      <div class="card-body4">
+                          <div class="blood">
+                              <i class="fas fa-tint xyz"></i>
+                          </div><br>
+                          <div>
+                              Total Blood Unit (in ml) <br>
+                              {{totalbloodunit}}
+                          </div>                            
+                      </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+   
 <div style="width: 90%; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
     <h2 style="color: #333; margin-top: 20px;">Monthly Donations vs. Requests</h2>
     <img src="data:image/png;base64,{{ chart1 }}" alt="Donations vs Requests Chart" style="max-width: 80%; height: auto; margin-top: 10px; border-radius: 8px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);">
@@ -238,17 +438,87 @@
     <h2 style="color: #333; margin-top: 20px;">Blood Stock Levels Over Months</h2>
     <img src="data:image/png;base64,{{ chart2 }}" alt="Blood Stock Levels Chart" style="max-width: 80%; height: auto; margin-top: 10px; border-radius: 8px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);">
 
-    {% comment %} <img src="{% static 'images/hero.jpg' %}" alt="Hero Image" style="max-width: 80%; height: auto; margin-top: 10px; border-radius: 8px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);"> {% endcomment %}
+   
 </div>
-<footer style="background-color: black;">
-    <div class="container text-center py-4 text-white">
-      <p>Blood Bank Management System
-        <br>
-        Made by BloodBridge &copy; 2024
-    </p>
-  
     </div>
-       
-         </footer>
-  
-{% endblock content %}
+</body>
+<br><br>
+
+<footer class="py-5 text-white" style="background-color: rgb(0, 0, 0); color: white;">
+
+  <div class="container">
+     <div class="row">
+         <div class="col-6 col-md-2 mb-3">
+           <h5 class="text-white">Quick links</h5>
+           <ul class="nav flex-column">
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Home</a></li>
+             {% comment %} <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Features</a></li>
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Pricing</a></li>
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">FAQs</a></li> {% endcomment %}
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">About</a></li>
+           </ul>
+         </div>
+ 
+         <div class="col-6 col-md-2 mb-3">
+           <h5 class="text-white">Contack Us</h5>
+           <ul class="nav flex-column">
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">123 BloodBridge St, City, Country</a></li>
+             {% comment %} <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Features</a></li>
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Pricing</a></li>
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">FAQs</a></li> {% endcomment %}
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">+1 234 567 890</a></li>
+             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">info@bloodbridge.com</a></li>
+           </ul>
+         </div>
+ 
+         <div class="col-6 col-md-2 mb-3">
+           <h5 class="text-white">Social Media</h5>
+           {% comment %} <ul class="nav flex-column">
+             <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg>Twitter</a></li>
+             <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg>Instagram</a></li>
+             <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg>Facebook</a></li>
+           </ul> {% endcomment %}
+           <ul class="nav flex-column">
+             <li class="ms-3">
+                 <a class="link-light" href="#">
+                     <i class="bi bi-twitter" style="font-size: 24px;"></i> Twitter
+                 </a>
+             </li>
+             <li class="ms-3">
+                 <a class="link-light" href="#">
+                     <i class="bi bi-instagram" style="font-size: 24px;"></i> Instagram
+                 </a>
+             </li>
+             <li class="ms-3">
+                 <a class="link-light" href="#">
+                     <i class="bi bi-facebook" style="font-size: 24px;"></i> Facebook
+                 </a>
+             </li>
+         </ul>
+         </div>
+ 
+         <div class="col-md-5 offset-md-1 mb-3">
+           <form>
+             <h5 class="text-white">Subscribe to our newsletter</h5>
+             <p class="text-white">Monthly digest of what's new and exciting from us.</p>
+             <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+               <label for="newsletter1" class="visually-hidden">Email address</label>
+               <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+               <button class="btn btn-primary" type="button">Subscribe</button>
+             </div>
+           </form>
+         </div>
+       </div>
+ 
+       <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+         <p class="text-white">© 2024 Company, Inc. All rights reserved.</p>
+         <ul class="list-unstyled d-flex">
+           <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+           <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+           <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+         </ul>
+       </div>
+  </div>
+ </footer>
+</html>
+{% endblock content %} 

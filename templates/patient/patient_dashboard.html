@@ -1,187 +1,314 @@
-{% comment %} {% extends 'patient/patientbase.html' %}
-{% block content %}
-<head>
-    
-</head>
-<br><br>
-<body>
-  
-
-<div class="container">
-
- 
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="card bg-light">
-          <div class="card-body">
-              <div class="blood">
-                <i class="fas fa-sync-alt xyz"></i>
-              </div><br>
-              <div>
-                Request Made <br>
-                  {{requestmade}}
-              </div>                            
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-3">
-        <div class="card bg-light">
-            <div class="card-body">
-                <div class="blood">
-                  <i class="fas fa-sync xyz"></i>
-                </div><br>
-                <div>
-                    Pending Request <br>
-                    {{requestpending}}
-                </div>                            
-            </div>
-          </div>
-      </div>
-
-      <div class="col-sm-3">
-          <div class="card bg-light">
-              <div class="card-body">
-                  <div class="blood">
-                    <i class="fas fa-check-circle xyz"></i>
-                  </div><br>
-                  <div>
-                       Approved Request<br>
-                      {{requestapproved}}
-                  </div>                            
-              </div>
-            </div>
-      </div>
-      <div class="col-sm-3">
-          <div class="card bg-light">
-              <div class="card-body">
-                  <div class="blood">
-                    <i class="fas fa-times-circle xyz"></i>
-                  </div><br>
-                  <div>
-                       Rejected Request <br>
-                      {{requestrejected}}
-                  </div>                            
-              </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-</body>
-
-{% endblock content %} {% endcomment %}
-
 
 
 {% block content %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Document</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+  .custom-navbar {
+            border-radius: 20px;
+            box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3); 
+        }
+
+        .profile-pic {
+            width: 20px; /* Smaller profile picture */
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px; /* Space between image and text */
+        }
+
+        .logout-text {
+            text-decoration: none;
+            color: black;
+            font-size: 12px; /* Smaller font size */
+        }
+
+        /* Custom styling for vertical navbar */
+        .vertical-navbar {
+            height: 100vh;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .vertical-navbar a {
+            text-decoration: none;
+            color: black;
+            font-size: 14px; /* Smaller font size */
+            padding: 8px 16px; /* Reduced padding */
+            display: block;
+        }
+
+        .vertical-navbar a:hover {
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background-color: #f4f4f4; /* Light grey background */
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .welcome-card h2 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .welcome-card p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Status Card Styles */
+        .status-card {
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Total Requests - Blue Gradient */
+        .total-requests {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+        }
+
+        .total-requests i {
+            font-size: 40px;
+            margin-right: 10px;
+        }
+
+        /* Pending Requests - Orange Gradient */
+        .pending-requests {
+            background: linear-gradient(135deg, #fd7e14, #ff9f43);
+        }
+
+        .pending-requests i {
+            font-size: 40px;
+            margin-right: 10px;
+        }
+
+        /* Approved Requests - Green Gradient */
+        .approved-requests {
+            background: linear-gradient(135deg, #28a745, #a1d88f);
+        }
+
+        .approved-requests i {
+            font-size: 40px;
+            margin-right: 10px;
+        }
+
+        /* Rejected Requests - Red Gradient */
+        .rejected-requests {
+            background: linear-gradient(135deg, #dc3545, #f67280);
+        }
+
+        .rejected-requests i {
+            font-size: 40px;
+            margin-right: 10px;
+        }
+
+        /* Adjust Layout for Cards */
+        .status-card h5 {
+            font-size: 22px;
+            margin: 10px 0;
+        }
+
+        .status-card p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-card h2 {
+                font-size: 24px;
+            }
+
+            .status-card {
+                flex-direction: column;
+                text-align: left;
+                margin-bottom: 20px;
+            }
+
+            .status-card i {
+                margin-bottom: 10px;
+            }
+        }
+
+    </style>
+    <title>Dashboard</title>
 </head>
-
-
-    <header class="p-3 text-bg-dark">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-              <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-            </a>
-    
-       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-              <li><a href="/patient/make-request" class="nav-link px-2 text-white">Make Request</a></li>
-              <li><a href="/patient/my-request" class="nav-link px-2 text-white">Request History</a></li>
-             </ul>
-  
-     
-   
-             
-              <a class="nav-link" href="{% url 'patient-profile' %}">My Profile</a>
-             
-            <div class="text-end">
-                <a href="/logout" style="background-color: #8B0000;" class="btn text-white">Logout</a>
-          
+<body style="background-color: rgb(238, 238, 238);">
+    <div class="container-fluid mt-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">BloodBridge</a>
+                <div class="d-flex ms-auto">
+                  <a href="/donor/nearby-donors" class="logout-text">Nearby Donors</a> &nbsp;&nbsp;
+                    <a href="/logout" class="logout-text">Logout</a>&nbsp;&nbsp;
+                    <!-- Profile Picture -->
+                   <a href="patient-profile/"><img src="{{ patient.profile_pic }}"  class="profile-pic"></a> 
+                </div>
             </div>
-            &nbsp;&nbsp;
-            <div class="text-end">
-              <a href="/donor/nearby-donors" style="background-color: green;" class="btn text-white">Nearby Donors</a>
-        
-          </div>
-          </div>
+        </nav>
+    </div>
+
+    <!-- Vertical Navbar -->
+    <div class="d-flex">
+        <div class="vertical-navbar">
+            <a href="/">Dashboard</a>
+            <a href="/patient/make-request">New Request</a>
+            <a href="/patient/my-request">Request History</a>
         </div>
-      </header>
-      <br><br>
-      <body>
         
-      
-      <div class="container">
-      
-       
-          <div class="row">
-            <div class="col-sm-3">
-              <div class="card bg-light">
-                <div class="card-body">
-                    <div class="blood">
-                      <i class="fas fa-sync-alt xyz"></i>
-                    </div><br>
-                    <div>
-                      Request Made <br>
-                        {{requestmade}}
-                    </div>                            
-                </div>
-              </div>
+        <!-- Main Content Area -->
+        <div class="container-fluid ms-4 p-4">
+            <!-- Welcome Back Message -->
+            <div class="welcome-card">
+                <h2>Welcome Back, Requestor!</h2>
+                <p>Manage your requests and track your progress. Stay updated with the status of your blood donation requests.</p>
             </div>
-      
-            <div class="col-sm-3">
-              <div class="card bg-light">
-                  <div class="card-body">
-                      <div class="blood">
-                        <i class="fas fa-sync xyz"></i>
-                      </div><br>
-                      <div>
-                          Pending Request <br>
-                          {{requestpending}}
-                      </div>                            
-                  </div>
-                </div>
-            </div>
-      
-            <div class="col-sm-3">
-                <div class="card bg-light">
-                    <div class="card-body">
-                        <div class="blood">
-                          <i class="fas fa-check-circle xyz"></i>
-                        </div><br>
+
+            <!-- Status Cards -->
+            <div class="row">
+                <!-- Total Requests Card -->
+                <div class="col-md-3 mb-4">
+                    <div class="card status-card total-requests">
+                        <i class="fas fa-tasks"></i>
                         <div>
-                             Approved Request<br>
-                            {{requestapproved}}
-                        </div>                            
+                            <h5>Total Requests</h5>
+                            <p>{{requestmade}}</p> <!-- Replace with dynamic data -->
+                        </div>
                     </div>
-                  </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card bg-light">
-                    <div class="card-body">
-                        <div class="blood">
-                          <i class="fas fa-times-circle xyz"></i>
-                        </div><br>
+                </div>
+
+                <!-- Pending Requests Card -->
+                <div class="col-md-3 mb-4">
+                    <div class="card status-card pending-requests">
+                        <i class="fas fa-clock"></i>
                         <div>
-                             Rejected Request <br>
-                            {{requestrejected}}
-                        </div>                            
+                            <h5>Pending Requests</h5>
+                            <p>{{requestpending}}</p> <!-- Replace with dynamic data -->
+                        </div>
                     </div>
-                  </div>
-              </div>
-      
-          </div>
-      </div>
-      
-      </body>
-     
+                </div>
+
+                <!-- Approved Requests Card -->
+                <div class="col-md-3 mb-4">
+                    <div class="card status-card approved-requests">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h5>Approved Requests</h5>
+                            <p>{{requestapproved}}</p> <!-- Replace with dynamic data -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rejected Requests Card -->
+                <div class="col-md-3 mb-4">
+                    <div class="card status-card rejected-requests">
+                        <i class="fas fa-times-circle"></i>
+                        <div>
+                            <h5>Rejected Requests</h5>
+                            <p>{{requestrejected}}</p> <!-- Replace with dynamic data -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<footer class="py-5 text-white" style="background-color: rgb(0, 0, 0); color: white;">
+
+    <div class="container">
+       <div class="row">
+           <div class="col-6 col-md-2 mb-3">
+             <h5 class="text-white">Quick links</h5>
+             <ul class="nav flex-column">
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Home</a></li>
+               {% comment %} <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Features</a></li>
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Pricing</a></li>
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">FAQs</a></li> {% endcomment %}
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">About</a></li>
+             </ul>
+           </div>
+   
+           <div class="col-6 col-md-2 mb-3">
+             <h5 class="text-white">Contack Us</h5>
+             <ul class="nav flex-column">
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">123 BloodBridge St, City, Country</a></li>
+               {% comment %} <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Features</a></li>
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Pricing</a></li>
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">FAQs</a></li> {% endcomment %}
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">+1 234 567 890</a></li>
+               <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">info@bloodbridge.com</a></li>
+             </ul>
+           </div>
+   
+           <div class="col-6 col-md-2 mb-3">
+             <h5 class="text-white">Social Media</h5>
+             {% comment %} <ul class="nav flex-column">
+               <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg>Twitter</a></li>
+               <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg>Instagram</a></li>
+               <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg>Facebook</a></li>
+             </ul> {% endcomment %}
+             <ul class="nav flex-column">
+               <li class="ms-3">
+                   <a class="link-light" href="#">
+                       <i class="bi bi-twitter" style="font-size: 24px;"></i> Twitter
+                   </a>
+               </li>
+               <li class="ms-3">
+                   <a class="link-light" href="#">
+                       <i class="bi bi-instagram" style="font-size: 24px;"></i> Instagram
+                   </a>
+               </li>
+               <li class="ms-3">
+                   <a class="link-light" href="#">
+                       <i class="bi bi-facebook" style="font-size: 24px;"></i> Facebook
+                   </a>
+               </li>
+           </ul>
+           </div>
+   
+           <div class="col-md-5 offset-md-1 mb-3">
+             <form>
+               <h5 class="text-white">Subscribe to our newsletter</h5>
+               <p class="text-white">Monthly digest of what's new and exciting from us.</p>
+               <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                 <label for="newsletter1" class="visually-hidden">Email address</label>
+                 <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+                 <button class="btn btn-primary" type="button">Subscribe</button>
+               </div>
+             </form>
+           </div>
+         </div>
+   
+         <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+           <p class="text-white">© 2024 Company, Inc. All rights reserved.</p>
+           <ul class="list-unstyled d-flex">
+             <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+             <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+             <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+           </ul>
+         </div>
+    </div>
+   </footer>
+    <!-- Font Awesome Icons (for the icons inside cards) -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
 </html>
-{% endblock content %}
+{% endblock %}

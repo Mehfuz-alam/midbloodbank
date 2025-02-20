@@ -85,6 +85,7 @@ def patient_dashboard_view(request):
         'requestapproved': bmodels.BloodRequest.objects.all().filter(request_by_patient=patient).filter(status='Approved').count(),
         'requestmade': bmodels.BloodRequest.objects.all().filter(request_by_patient=patient).count(),
         'requestrejected': bmodels.BloodRequest.objects.all().filter(request_by_patient=patient).filter(status='Rejected').count(),
+        'profile_pic': patient.profile_pic.url if patient.profile_pic else 'image/bb6.jpg'
     }
     return render(request, 'patient/patient_dashboard.html', context=dict)
 

@@ -1,40 +1,3 @@
- {% comment %} {% load static %}
-<!DOCTYPE html>
-
-<head>
-   
-</head>
-
-
-<body>
-  {% include "blood/navbar.html" %}
-<br>
-<section id="section-jumbotron" style="margin-bottom: 0px;" class="jumbotron jumbotron-fluid d-flex justify-content-center align-items-center xyz">
-    <div class="container text-center">
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-     
-      
-      <br><br><br><br>
-      
-    </div>  
-  </section>
-
-
-  <div class="jumbotron" style="margin-top: 0px;margin-bottom: 0px;">
-
-    <p class="lead text-center">“Opportunities knock the door sometimes, so don’t let it go and donate blood.”
-      </p>
-    
-    <p class="text-center">- Blood Bridge</p>
-    
-  </div>
-  {% include "blood/footer.html" %}
-
-
-</body>
-
-</html>  {% endcomment %}
-
 
 {% load static %}
 <!DOCTYPE html>
@@ -42,61 +5,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="index.css">
-    <title>Document</title>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      .hero {
-        background-image: url("{% static 'image/blood.jpg' %}");
-        margin: 0;
-        height: 80vh; 
-        background-size: cover; 
-        background-repeat: no-repeat; 
-        background-position: center; 
-    }
+        .custom-navbar {
+            border-radius: 20px;
+            box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3); 
+        }
+
+        .custom-card {
+            border: 2px solid white; /* White border */
+            border-radius: 20px; /* Rounded corners */
+            box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3); /* Matching navbar shadow */
+        }
+        .custom-table {
+            box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3); /* Shadow like navbar */
+            border-radius: 10px;
+            overflow: hidden; /* Ensures border-radius applies to table */
+        }
+        .donor-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .donor-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        
+
+
+
+        body {
+            overflow-x: hidden; /* Prevents horizontal scrolling */
+        }
     
+        /* Make images responsive */
+        img {
+            max-width: 100%;
+            height: 210 px;
+        }
     
-    #hero-content{
-        background-color: rgba(55, 53, 53, 0.4);
-        color: white;
-        padding: 20px;
-        border-radius: 6px;
-    }
-    body {
-      background-image: url("{% static 'image/blood.jpg' %}");
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-  }
+        /* Adjust hero section text for small screens */
+        @media (max-width: 768px) {
+            .hero-text {
+                font-size: 8vw; /* Responsive font size */
+                text-align: center;
+            }
+        }
+    
+        /* Ensure table scrolls properly on small screens */
+        .table-responsive {
+            overflow-x: auto;
+        }
+    
+        /* Donor story cards responsive tweaks */
+        @media (max-width: 768px) {
+            .donor-card {
+                text-align: center;
+            }
+            .donor-img {
+                margin-bottom: 10px;
+            }
+        }
+
+
+
     </style>
+    <title>Navbar Update</title>
 </head>
-<body>
+<body style="background-color: rgb(238, 238, 238);">
   {% include "blood/navbar.html" %}
+   
 
-    
-       
 
-      
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+           <img style="height: 500px;" src="{% static 'image/bloodpost.jpg.png' %}" alt="">
+        </div>
+        <div class="py-5 col-md-6">
+            <h1 style='font-size: 60px; '>Be Hero,</h1>
+            <h2 style='font-size: 50px; color: red;'>Save Lives with Your <br>Donation</h2>
+            <p>"Join Our Mission to Ensure No One Waits for Blood"</p>
+            <p>💉 Donate Today – Because every drop counts.</p>
+            <p>❤️ Join Our Mission – No one should have to wait for blood.</p>
+            <p>🚑 Make an Impact – A few minutes of your time can mean a lifetime for someone else.</p>
+        </div>
+    </div>
+</div>
 
-       <section class="hero">
-        <div class="container">
-            <div class="row py-5">
-                <div class="col-md-6 py-4" id="hero-content">
-                    <h3>Blood Bridge</h3>
-                    <p class="py-4">Welcome to Blood Bridge – a comprehensive blood bank management system connecting donors, patients, and administrators to ensure seamless blood donation and transfusion services. Together, we save lives!</p>
+
+
+<!-- Services Section -->
+<div class="container my-5 text-center">
+    <h3 class="py-4">Our Services</h3>
+    <div class="row mt-4">
+        <!-- Card 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card custom-card p-3">
+                <img src="{% static 'image/blood01.jpg' %}"height="210px" class="card-img-top rounded" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">Request Blood</h5>
                 </div>
-                <div class="col-md-6"></div>
             </div>
         </div>
 
-       </section>
+        <div class="col-md-4 mb-4">
+            <div class="card custom-card p-3">
+                <img src="{% static 'image/blood02.jpg' %}"height="210px" class="card-img-top rounded" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">Donate Blood</h5>
+                </div>
+            </div>
+        </div>
 
-       {% include "blood/footer.html" %}
-       
+
+        <div class="col-md-4 mb-4">
+            <div class="card custom-card p-3">
+                <img src="{% static 'image/blood03.jpg' %}"height="210px" class="card-img-top rounded" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">Emergency</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Donation process -->
+
+<div class="container text-center">
+    <h3 class="py-5">Donation process</h3>
+    <div class="row ">
+        <div class="col-md-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-file-earmark-text-fill " viewBox="0 0 16 16">
+                <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"/>
+              </svg>
+            <h4 class="pt-4">Registration</h4>
+            <p>Sign up by providing basic details and answering a few health questions. It’s quick and easy!</p>
+        </div>
+        <div class="col-md-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lungs" viewBox="0 0 16 16">
+                <path d="M8.5 1.5a.5.5 0 1 0-1 0v5.243L7 7.1V4.72C7 3.77 6.23 3 5.28 3c-.524 0-1.023.27-1.443.592-.431.332-.847.773-1.216 1.229-.736.908-1.347 1.946-1.58 2.48-.176.405-.393 1.16-.556 2.011-.165.857-.283 1.857-.241 2.759.04.867.233 1.79.838 2.33.67.6 1.622.556 2.741-.004l1.795-.897A2.5 2.5 0 0 0 7 11.264V10.5a.5.5 0 0 0-1 0v.764a1.5 1.5 0 0 1-.83 1.342l-1.794.897c-.978.489-1.415.343-1.628.152-.28-.25-.467-.801-.505-1.63-.037-.795.068-1.71.224-2.525.157-.82.357-1.491.491-1.8.19-.438.75-1.4 1.44-2.25.342-.422.703-.799 1.049-1.065.358-.276.639-.385.833-.385a.72.72 0 0 1 .72.72v3.094l-1.79 1.28a.5.5 0 0 0 .58.813L8 7.614l3.21 2.293a.5.5 0 1 0 .58-.814L10 7.814V4.72a.72.72 0 0 1 .72-.72c.194 0 .475.11.833.385.346.266.706.643 1.05 1.066.688.85 1.248 1.811 1.439 2.249.134.309.334.98.491 1.8.156.814.26 1.73.224 2.525-.038.829-.224 1.38-.505 1.63-.213.19-.65.337-1.628-.152l-1.795-.897A1.5 1.5 0 0 1 10 11.264V10.5a.5.5 0 0 0-1 0v.764a2.5 2.5 0 0 0 1.382 2.236l1.795.897c1.12.56 2.07.603 2.741.004.605-.54.798-1.463.838-2.33.042-.902-.076-1.902-.24-2.759-.164-.852-.38-1.606-.558-2.012-.232-.533-.843-1.571-1.579-2.479-.37-.456-.785-.897-1.216-1.229C11.743 3.27 11.244 3 10.72 3 9.77 3 9 3.77 9 4.72V7.1l-.5-.357z"/>
+              </svg>
+            <h4 class="pt-4">Screening</h4>
+            <p>A simple check-up ensures you’re fit to donate. This includes a health assessment and a small blood test.</p>
+        </div>
+        <div class="col-md-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+                <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2 2 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a10 10 0 0 0-.443.05 9.4 9.4 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a9 9 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.2 2.2 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.9.9 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+              </svg>
+            <h4 class="pt-4">Donation</h4>
+            <p>The actual donation takes just 10-15 minutes. Relax, save lives, and feel great about making a difference!</p>
+        </div>
+    </div>
+
+</div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+
+<!-- learn about donation section -->
+<div class="section pu-4" style="background-color: white;">
+    <div class="container text-center">
+
+        <h3 class="py-5">Learn About Donation</h3>
+        <div class="row">
+            <div class="col-md-4 py3"><img style="height: 400px; border-radius: 5px;" src="{% static 'image/learndonation.jpg' %}" alt=""></div>
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center custom-table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Blood Type</th>
+                                <th>Can Donate Blood To</th>
+                                <th>Can Receive Blood From</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A+</td>
+                                <td>A+, AB+</td>
+                                <td>A+, A-, O+, O-</td>
+                            </tr>
+                            <tr>
+                                <td>A-</td>
+                                <td>A+, A-, AB+, AB-</td>
+                                <td>A-, O-</td>
+                            </tr>
+                            <tr>
+                                <td>B+</td>
+                                <td>B+, AB+</td>
+                                <td>B+, B-, O+, O-</td>
+                            </tr>
+                            <tr>
+                                <td>B-</td>
+                                <td>B+, B-, AB+, AB-</td>
+                                <td>B-, O-</td>
+                            </tr>
+                            <tr>
+                                <td>AB+</td>
+                                <td>AB+</td>
+                                <td>All Blood Types (Universal Receiver)</td>
+                            </tr>
+                            <tr>
+                                <td>AB-</td>
+                                <td>AB+, AB-</td>
+                                <td>A-, B-, AB-, O-</td>
+                            </tr>
+                            <tr>
+                                <td>O+</td>
+                                <td>O+, A+, B+, AB+</td>
+                                <td>O+, O-</td>
+                            </tr>
+                            <tr>
+                                <td>O-</td>
+                                <td>All Blood Types (Universal Donor)</td>
+                                <td>O-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- donor stories section -->
+<div class="container text-center py-4">
+    <h3>Donor Stories</h3>
+    <p>Read inspiring stories from our donors</p>
+
+    <div class="row justify-content-center">
+        <!-- Donor 1 -->
+        <div class="col donor-card mx-2">
+            <div class="row align-items-center">
+                <div class="col-3">
+                    <img src="{% static 'image/donor03.jpg' %}" height="100px"width="100px"alt="Alam" class="donor-img">
+                </div>
+                <div class="col-9 text-start">
+                    <h4>Mehfuz Alam</h4>
+                    <p class="text-muted">Regular Donor</p>
+                </div>
+            </div>
+            <p class="text-start mt-2">Alam never thought much about blood donation until he saw a local appeal for donors. He gave once and realized how simple it was to save lives. Now, he donates regularly, knowing his small act makes a big impact.
+
+                "One donation can change a life," Jake says.
+                
+                Join him—be a donor today! </p>
+        </div>
+
+        <!-- Donor 2 -->
+        <div class="col donor-card mx-2">
+            <div class="row align-items-center">
+                <div class="col-3">
+                    <img src="{% static 'image/donor01.jpg' %}"height="100px"width="100px" alt="John Doe" class="donor-img">
+                </div>
+                <div class="col-9 text-start">
+                    <h4>Sarah Doe</h4>
+                    <p class="text-muted">First-Time Donor</p>
+                </div>
+            </div>
+            <p class="text-start mt-2">When Sarah donated blood to save a friend's brother, she realized how powerful a single donation could be. Since then, she’s helped countless lives.
+
+                “It's the easiest way to make a real difference,” she says.
+                
+                Be a hero—donate today! </p>
+        </div>
+    </div>
+</div>
+
+
+<!-- footer -->
+
+<footer class="py-5 text-white" style="background-color: rgb(0, 0, 0); color: white;">
+
+     <div class="container">
+        <div class="row">
+            <div class="col-6 col-md-2 mb-3">
+              <h5 class="text-white">Quick links</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Home</a></li>
+                {% comment %} <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Features</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Pricing</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">FAQs</a></li> {% endcomment %}
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">About</a></li>
+              </ul>
+            </div>
+    
+            <div class="col-6 col-md-2 mb-3">
+              <h5 class="text-white">Contack Us</h5>
+              <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">123 BloodBridge St, City, Country</a></li>
+                {% comment %} <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Features</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">Pricing</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">FAQs</a></li> {% endcomment %}
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">+1 234 567 890</a></li>
+                <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-white">info@bloodbridge.com</a></li>
+              </ul>
+            </div>
+    
+            <div class="col-6 col-md-2 mb-3">
+              <h5 class="text-white">Social Media</h5>
+              {% comment %} <ul class="nav flex-column">
+                <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg>Twitter</a></li>
+                <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg>Instagram</a></li>
+                <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg>Facebook</a></li>
+              </ul> {% endcomment %}
+              <ul class="nav flex-column">
+                <li class="ms-3">
+                    <a class="link-light" href="#">
+                        <i class="bi bi-twitter" style="font-size: 24px;"></i> Twitter
+                    </a>
+                </li>
+                <li class="ms-3">
+                    <a class="link-light" href="#">
+                        <i class="bi bi-instagram" style="font-size: 24px;"></i> Instagram
+                    </a>
+                </li>
+                <li class="ms-3">
+                    <a class="link-light" href="#">
+                        <i class="bi bi-facebook" style="font-size: 24px;"></i> Facebook
+                    </a>
+                </li>
+            </ul>
+            </div>
+    
+            <div class="col-md-5 offset-md-1 mb-3">
+              <form>
+                <h5 class="text-white">Subscribe to our newsletter</h5>
+                <p class="text-white">Monthly digest of what's new and exciting from us.</p>
+                <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                  <label for="newsletter1" class="visually-hidden">Email address</label>
+                  <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+                  <button class="btn btn-primary" type="button">Subscribe</button>
+                </div>
+              </form>
+            </div>
+          </div>
+    
+          <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+            <p class="text-white">© 2024 Company, Inc. All rights reserved.</p>
+            <ul class="list-unstyled d-flex">
+              <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+              <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+              <li class="ms-3"><a class="link-light" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+            </ul>
+          </div>
+     </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -280,3 +280,15 @@ def get_donor_location(request):
             'latitude': 22.5726,  # Default to Kolkata
             'longitude': 88.3639
         })
+
+
+from django.contrib import messages
+
+@login_required
+def donor_profile_view(request):
+    try:
+        donor = models.Donor.objects.get(user=request.user)
+        return render(request, 'donor/donor_profile.html', {'donor': donor})
+    except models.Donor.DoesNotExist:
+        messages.error(request, "Donor profile not found.")
+        return redirect('donor-dashboard')
