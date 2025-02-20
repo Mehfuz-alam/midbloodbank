@@ -98,7 +98,7 @@
                   <a href="/donor/nearby-donors" class="logout-text">Nearby Donors</a> &nbsp;&nbsp;
                     <a href="/logout" class="logout-text">Logout</a>&nbsp;&nbsp;
                     <!-- Profile Picture -->
-                    <a href="patient-profile/"><img src="{{ patient.profile_pic }}"  class="profile-pic"></a>
+                    {% comment %} <a href="patient-profile/"><img src="{{ .profile_pic }}"  class="profile-pic"></a> {% endcomment %}
                 </div>
             </div>
         </nav>
@@ -130,7 +130,7 @@
                     <p><strong>Profile Picture:</strong></p>
                     <img src="{{ donor.profile_pic.url }}" alt="Profile Picture" class="img-fluid" style="max-width: 200px;">
                     <br><br>
-                   
+                    <a href="/donor/edit-donor-profile/"><button>Edit</button></a>
                 </div>
             </div>
         </div>

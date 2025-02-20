@@ -24,7 +24,12 @@ class PatientUserForm(forms.ModelForm):
         if User.objects.filter(username=username).exists():
             raise ValidationError("This username is already taken. Please choose a different one.")
         return username
-    
+
+class PatientUserUpdateForm(forms.ModelForm):
+    """Form for updating only first_name and last_name."""
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name'] 
 
 
 

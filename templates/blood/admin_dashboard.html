@@ -202,7 +202,7 @@
             color: #555;
         }
         
-        /* Responsive Grid Layout */
+        {% comment %} /* Responsive Grid Layout */
         @media (max-width: 768px) {
             .row3 {
                 display: flex;
@@ -222,11 +222,174 @@
                 flex: 0 0 100%;
                 max-width: 100%;
             }
-        }
+        } {% endcomment %}
 .card-body1 { background: linear-gradient(135deg, #ff416c, #ff4b2b);border-radius: 10px; } /* Red/Pink */
 .card-body2 { background: linear-gradient(135deg, #007bff, #00c6ff);border-radius: 10px; } /* Blue */
 .card-body3 { background: linear-gradient(135deg, #28a745, #a1d88f); border-radius: 10px;} /* Green */
 .card-body4 { background: linear-gradient(135deg, #fd7e14, #ff9f43); border-radius: 10px;} /* Orange */
+
+
+
+/* Existing CSS */
+/* Add this to your existing styles */
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .col-sm-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .col-sm-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .vertical-navbar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding-top: 10px;
+    }
+
+    .vertical-navbar a {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .navbar-brand {
+        font-size: 20px;
+    }
+
+    .logout-text {
+        font-size: 12px;
+    }
+
+    .profile-pic {
+        width: 25px;
+        height: 25px;
+    }
+
+    .form-container {
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-body div {
+        font-size: 16px;
+    }
+
+    .card-body div:last-child {
+        font-size: 20px;
+    }
+
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+
+    .col-sm-3 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand {
+        font-size: 18px;
+    }
+
+    .logout-text {
+        font-size: 10px;
+    }
+
+    .profile-pic {
+        width: 20px;
+        height: 20px;
+    }
+
+    .form-container {
+        padding: 10px;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    .card-body div {
+        font-size: 14px;
+    }
+
+    .card-body div:last-child {
+        font-size: 18px;
+    }
+
+    .vertical-navbar a {
+        font-size: 14px;
+    }
+
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .col-sm-3 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+/* Additional Responsive Adjustments */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+    }
+
+    .ms-auto {
+        margin-left: 0 !important;
+        margin-top: 10px;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 10px;
+    }
+
+    .navbar-collapse {
+        padding-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-nav .nav-item {
+        margin-bottom: 5px;
+    }
+
+    .navbar-collapse {
+        padding-top: 5px;
+    }
+}
+
+
+
     </style>
     <title>Request Blood</title>
 </head>

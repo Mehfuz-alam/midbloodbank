@@ -85,7 +85,7 @@ def patient_dashboard_view(request):
         'requestapproved': bmodels.BloodRequest.objects.all().filter(request_by_patient=patient).filter(status='Approved').count(),
         'requestmade': bmodels.BloodRequest.objects.all().filter(request_by_patient=patient).count(),
         'requestrejected': bmodels.BloodRequest.objects.all().filter(request_by_patient=patient).filter(status='Rejected').count(),
-        'profile_pic': patient.profile_pic.url if patient.profile_pic else 'image/bb6.jpg'
+        'profile_pic': patient.profile_pic.url if patient.profile_pic else '/image/bb6.jpg'
     }
     return render(request, 'patient/patient_dashboard.html', context=dict)
 
@@ -173,33 +173,33 @@ def patient_profile_view(request):
         return redirect('patient-dashboard')
     
 
-# from django.shortcuts import render, redirect
-# from django.contrib.auth.decorators import login_required
-# from django.contrib import messages
-# from . import models, forms
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from . import models, forms
 
-# @login_required
-# def edit_patient_profile_view(request):
-#     patient = models.Patient.objects.get(user=request.user)
-#     user = request.user
+@login_required
+def edit_patient_profile_view(request):
+    patient = models.Patient.objects.get(user=request.user)
+    user = request.user
 
-#     if request.method == 'POST':
-#         user_form = forms.PatientUserForm(request.POST, instance=user)
-#         patient_form = forms.PatientForm(request.POST, request.FILES, instance=patient)
+    if request.method == 'POST':
+        user_form = forms.PatientUserUpdateForm(request.POST, instance=user)
+        patient_form = forms.PatientForm(request.POST, request.FILES, instance=patient)
 
-#         if user_form.is_valid() and patient_form.is_valid():
-#             user_form.save()  # Directly save user form (no need for manual field updates)
-#             patient_form.save()
+        if user_form.is_valid() and patient_form.is_valid():
+            user_form.save()  # Directly save user form (no need for manual field updates)
+            patient_form.save()
 
-#             messages.success(request, "Profile updated successfully!")
-#             return redirect('patient-profile')
-#         else:
-#             messages.error(request, "Please correct the errors below.")
-#     else:
-#         user_form = forms.PatientUserForm(instance=user)
-#         patient_form = forms.PatientForm(instance=patient)
+            messages.success(request, "Profile updated successfully!")
+            return redirect('patient-profile')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        user_form = forms.PatientUserUpdateForm(instance=user)
+        patient_form = forms.PatientForm(instance=patient)
 
-#     return render(request, 'patient/edit_patient_profile.html', {
-#         'user_form': user_form,
-#         'patient_form': patient_form,
-#     })
+    return render(request, 'patient/edit_patient_profile.html', {
+        'user_form': user_form,
+        'patient_form': patient_form,
+    })

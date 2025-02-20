@@ -17,5 +17,6 @@ urlpatterns = [
     path('nearby-donors/', views.nearby_donors, name='nearby_donors'),
     path('track-location/', views.track_donor_location, name='track-donor-location'),
     path('get-location/', views.get_donor_location, name='get-donor-location'),
-     path('donor-profile/', views.donor_profile_view, name='donor-profile'),
+    path('donor-profile/', views.donor_profile_view, name='donor-profile'),
+    path('edit-donor-profile/', views.edit_donor_profile_view, name='edit-patient-profile'),
 ]

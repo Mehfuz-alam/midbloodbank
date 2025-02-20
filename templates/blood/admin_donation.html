@@ -88,6 +88,156 @@
         .approved{
             color:blue;
         }
+
+
+
+
+
+        /* Responsive Styles */
+@media (max-width: 1200px) {
+    .vertical-navbar {
+        width: 200px; /* Reduce width on smaller screens */
+    }
+
+    .container-fluid.ms-4.p-4 {
+        margin-left: 220px; /* Adjust margin to accommodate the narrower navbar */
+    }
+}
+
+@media (max-width: 992px) {
+    .vertical-navbar {
+        width: 180px; /* Further reduce width */
+    }
+
+    .container-fluid.ms-4.p-4 {
+        margin-left: 200px;
+    }
+
+    .table-container {
+        padding: 15px;
+    }
+
+    .table thead th {
+        font-size: 14px; /* Reduce font size for table headers */
+    }
+
+    .table tbody td {
+        font-size: 14px; /* Reduce font size for table data */
+    }
+}
+
+@media (max-width: 768px) {
+    .vertical-navbar {
+        width: 100%; /* Full width on smaller screens */
+        height: auto; /* Auto height */
+        position: relative; /* Reset position */
+        padding-top: 10px;
+    }
+
+    .vertical-navbar a {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .container-fluid.ms-4.p-4 {
+        margin-left: 0; /* Reset margin */
+        padding: 10px;
+    }
+
+    .table-container {
+        padding: 10px;
+    }
+
+    .table thead th {
+        font-size: 12px;
+    }
+
+    .table tbody td {
+        font-size: 12px;
+    }
+
+    .navbar-brand {
+        font-size: 18px; /* Reduce navbar brand font size */
+    }
+
+    .logout-text {
+        font-size: 10px; /* Reduce logout text size */
+    }
+
+    .profile-pic {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .vertical-navbar {
+        display: none; /* Hide vertical navbar on very small screens */
+    }
+
+    .container-fluid.ms-4.p-4 {
+        padding: 5px;
+    }
+
+    .table-container {
+        padding: 5px;
+    }
+
+    .table thead th {
+        font-size: 10px;
+    }
+
+    .table tbody td {
+        font-size: 10px;
+    }
+
+    .navbar-brand {
+        font-size: 16px;
+    }
+
+    .logout-text {
+        font-size: 8px;
+    }
+
+    .profile-pic {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+/* Additional Responsive Adjustments */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column; /* Stack elements vertically */
+    }
+
+    .ms-auto {
+        margin-left: 0 !important; /* Reset margin */
+        margin-top: 10px;
+    }
+
+    .navbar-nav {
+        flex-direction: column; /* Stack navbar links vertically */
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 10px;
+    }
+
+    .navbar-collapse {
+        padding-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-nav .nav-item {
+        margin-bottom: 5px;
+    }
+
+    .navbar-collapse {
+        padding-top: 5px;
+    }
+}
     </style>
     <title>All Blood Requests</title>
 </head>

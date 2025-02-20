@@ -166,30 +166,55 @@ def admin_donor_view(request):
     donors=dmodels.Donor.objects.all()
     return render(request,'blood/admin_donor.html',{'donors':donors})
 
+# @login_required(login_url='adminlogin')
+# def update_donor_view(request,pk):
+#     donor=dmodels.Donor.objects.get(id=pk)
+#     user=dmodels.User.objects.get(id=donor.user_id)
+#     userForm=dforms.DonorUserForm(instance=user)
+#     donorForm=dforms.DonorForm(request.FILES,instance=donor)
+#     mydict={'userForm':userForm,'donorForm':donorForm}
+#     if request.method=='POST':
+#         userForm=dforms.DonorUserForm(request.POST,instance=user)
+#         donorForm=dforms.DonorForm(request.POST,request.FILES,instance=donor)
+#         if userForm.is_valid() and donorForm.is_valid():
+#             user=userForm.save(commit=False)
+#             user.set_password(userForm.cleaned_data['password'])
+#             user.save()
+#             donor=donorForm.save(commit=False)
+#             donor.user=user
+#             donor.bloodgroup=donorForm.cleaned_data['bloodgroup']
+#             donor.save()
+#             return redirect('admin-donor')
+#         else:
+#             # Print form errors for debugging
+#             print("User Form Errors:", userForm.errors)
+#             print("Donor Form Errors:", donorForm.errors)
+#     return render(request,'blood/update_donor.html',context=mydict)
+
+
 @login_required(login_url='adminlogin')
-def update_donor_view(request,pk):
-    donor=dmodels.Donor.objects.get(id=pk)
-    user=dmodels.User.objects.get(id=donor.user_id)
-    userForm=dforms.DonorUserForm(instance=user)
-    donorForm=dforms.DonorForm(request.FILES,instance=donor)
-    mydict={'userForm':userForm,'donorForm':donorForm}
-    if request.method=='POST':
-        userForm=dforms.DonorUserForm(request.POST,instance=user)
-        donorForm=dforms.DonorForm(request.POST,request.FILES,instance=donor)
+def update_donor_view(request, pk):
+    donor = dmodels.Donor.objects.get(id=pk)
+    user = donor.user
+
+    # ✅ Corrected Form Names
+    userForm = dforms.DonorUserUpdateForm(instance=user)  
+    donorForm = dforms.DonorForm(instance=donor)
+
+    if request.method == 'POST':
+        userForm = dforms.DonorUserUpdateForm(request.POST, instance=user)
+        donorForm = dforms.DonorForm(request.POST, request.FILES, instance=donor)
+
         if userForm.is_valid() and donorForm.is_valid():
-            user=userForm.save(commit=False)
-            user.set_password(userForm.cleaned_data['password'])
-            user.save()
-            donor=donorForm.save(commit=False)
-            donor.user=user
-            donor.bloodgroup=donorForm.cleaned_data['bloodgroup']
-            donor.save()
+            userForm.save()
+            donorForm.save()
             return redirect('admin-donor')
         else:
-            # Print form errors for debugging
             print("User Form Errors:", userForm.errors)
             print("Donor Form Errors:", donorForm.errors)
-    return render(request,'blood/update_donor.html',context=mydict)
+
+    return render(request, 'blood/update_donor.html', {'userForm': userForm, 'donorForm': donorForm})
+
 
 
 @login_required(login_url='adminlogin')
@@ -207,31 +232,55 @@ def admin_patient_view(request):
 
 
 
+# @login_required(login_url='adminlogin')
+# def update_patient_view(request, pk):
+#     patient = pmodels.Patient.objects.get(id=pk)
+#     user = patient.user
+#     userForm = pforms.PatientUserUpdateForm(instance=user)
+#     patientForm = pforms.PatientForm(request.FILES, instance=patient)
+#     mydict = {'userForm': userForm, 'patientForm': patientForm}
+
+#     if request.method == 'POST':
+#         userForm = pforms.PatientUserUpdateForm(request.POST, instance=user)
+#         patientForm = pforms.PatientForm(request.POST, request.FILES, instance=patient)
+#         if userForm.is_valid() and patientForm.is_valid():
+#             user = userForm.save(commit=False)
+#             user.set_password(userForm.cleaned_data['password'])  # Hash the password
+#             user.save()
+#             patient = patientForm.save(commit=False)
+#             patient.user = user
+#             patient.bloodgroup = patientForm.cleaned_data['bloodgroup']
+#             patient.save()
+#             return redirect('admin-patient')
+#         else:
+#             # Print form errors for debugging
+#             print("User Form Errors:", userForm.errors)
+#             print("Patient Form Errors:", patientForm.errors)
+#     return render(request, 'blood/update_patient.html', context=mydict)
+
 @login_required(login_url='adminlogin')
 def update_patient_view(request, pk):
     patient = pmodels.Patient.objects.get(id=pk)
     user = patient.user
-    userForm = pforms.PatientUserForm(instance=user)
-    patientForm = pforms.PatientForm(request.FILES, instance=patient)
-    mydict = {'userForm': userForm, 'patientForm': patientForm}
+
+    # ✅ Corrected Form Names
+    userForm = pforms.PatientUserUpdateForm(instance=user)  
+    patientForm = pforms.PatientForm(instance=patient)
 
     if request.method == 'POST':
-        userForm = pforms.PatientUserForm(request.POST, instance=user)
+        userForm = pforms.PatientUserUpdateForm(request.POST, instance=user)
         patientForm = pforms.PatientForm(request.POST, request.FILES, instance=patient)
+
         if userForm.is_valid() and patientForm.is_valid():
-            user = userForm.save(commit=False)
-            user.set_password(userForm.cleaned_data['password'])  # Hash the password
-            user.save()
-            patient = patientForm.save(commit=False)
-            patient.user = user
-            patient.bloodgroup = patientForm.cleaned_data['bloodgroup']
-            patient.save()
+            userForm.save()
+            patientForm.save()
             return redirect('admin-patient')
         else:
-            # Print form errors for debugging
             print("User Form Errors:", userForm.errors)
             print("Patient Form Errors:", patientForm.errors)
-    return render(request, 'blood/update_patient.html', context=mydict)
+
+    return render(request, 'blood/update_patient.html', {'userForm': userForm, 'patientForm': patientForm})
+
 
 
 @login_required(login_url='adminlogin')

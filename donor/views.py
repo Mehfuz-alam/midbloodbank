@@ -145,6 +145,7 @@ def set_donor_new_password_view(request):
 def donor_dashboard_view(request):
     donor = models.Donor.objects.get(user_id=request.user.id)
     dict = {
+        'donor': donor,
         'requestpending': bmodels.BloodRequest.objects.all().filter(request_by_donor=donor).filter(status='Pending').count(),
         'requestapproved': bmodels.BloodRequest.objects.all().filter(request_by_donor=donor).filter(status='Approved').count(),
         'requestmade': bmodels.BloodRequest.objects.all().filter(request_by_donor=donor).count(),
@@ -292,3 +293,32 @@ def donor_profile_view(request):
     except models.Donor.DoesNotExist:
         messages.error(request, "Donor profile not found.")
         return redirect('donor-dashboard')
+    
+
+
+@login_required
+def edit_donor_profile_view(request):
+    donor= models.Donor.objects.get(user=request.user)
+    user = request.user
+
+    if request.method == 'POST':
+        user_form = forms.DonorUserUpdateForm(request.POST, instance=user)
+        donor_form = forms.DonorForm(request.POST, request.FILES, instance=donor)
+
+        if user_form.is_valid() and donor_form.is_valid():
+            user_form.save()  # Directly save user form (no need for manual field updates)
+            donor_form.save()
+
+            messages.success(request, "Profile updated successfully!")
+            return redirect('donor-profile')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        user_form = forms.DonorUserUpdateForm(instance=user)
+        donor_form = forms.DonorForm(instance=donor)
+
+    return render(request, 'donor/edit_donor_profile.html', {
+        'user_form': user_form,
+        'donor_form': donor_form,
+    })
+
